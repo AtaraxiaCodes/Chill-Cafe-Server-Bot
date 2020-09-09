@@ -16,6 +16,31 @@ app.listen(8080);
 //prefix
 const prefix = '%';
 
+//Help Embed
+const helpEmbed = new discord.MessageEmbed()
+      .setTitle('Help Documentation')
+      .setColor('#00ffff')
+      .setDescription('chill cafe™')
+      .addFields(
+        { name: `${prefix}ping`, value: 'Test Ping' },
+        { name: `${prefix}server`, value: 'Displays Server Name' },
+        { name: `${prefix}member`, value: 'Displays Member Count' },
+        { name: `${prefix}created`, value: 'Displays Creation Date' },
+        { name: `${prefix}help`, value: 'DMs Help Documentation' },
+        { name: `${prefix}profile`, value: 'Displays Rank and Level Data (WIP)' },
+        );
+        
+//Profile Embed
+const profileEmbed = new discord.MessageEmbed()
+      .setTitle('Help Documentation')
+      .setColor('#00ffff')
+      .setDescription('chill cafe™')
+      .addFields(
+        { name: 'Current Rank', value: 'Coming Soon' },
+        { name: 'Current  Level', value: 'Coming Soon' },
+        { name: 'EXP to next Level', value: 'Coming Soon' },
+        );
+
 // level * levelrate = how much xp you need to get to the next level
 const levelrate = 20;
 
@@ -122,35 +147,12 @@ client.on('message', msg => {
 	} else if (msg.content == `${prefix}created`) {
 		msg.channel.send(`Created On ${msg.guild.createdAt}`); //Creation Date
 	} else if (msg.content == `${prefix}help`) {
-		const helpEmbed = new discord.MessageEmbed()
-			.setColor('#00ffff')
-			.setTitle('Help Documentation')
-			.setDescription('Some Neat Commands')
-			.addFields(
-			  { name: `${prefix}help`, value: 'DMs Help Documentation' },
-				{ name: `${prefix}ping`, value: 'Test Ping' },
-				{ name: `${prefix}server`, value: 'Displays Server Name' },
-				{ name: `${prefix}member`, value: 'Displays Member Count' },
-				{ name: `${prefix}created`, value: 'Displays Creation Date' },
-				{ name: `${prefix}profile`, value: 'Displays Your Profile' },
-	  };
-	}); //Help Documentation
-
-		msg.author.send(helpEmbed);
-	} else if (msg.content == `${prefix}profile`) {
-		const profileEmbed = new discord.MessageEmbed()
-			.setColor('#00ffff')
-			.setTitle('Profile')
-			.setDescription('chill cafe™')
-			.addFields(
-			  { name: `Current Rank`, value: 'Coming Soon' },
-			  { name: `Current Level`, value: 'Coming Soon' },
-			  { name: `EXP to next Level`, value: 'Coming Soon' },
-	  };
-	}); //Profile
-
-		msg.channel.send(profileEmbed);
+		message.author.send(helpEmbed); //DM Help Embed
+  } else if (msg.content == `${prefix}profile`) {
+    message.channel.send(profileEmbed); //Send Profile Embed
   }
+});
+
 
 const activities_list = [
 	'with the %help command.',
