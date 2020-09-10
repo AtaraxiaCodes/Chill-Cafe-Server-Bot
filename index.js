@@ -101,7 +101,7 @@ client.on('message', msg => {
 				}>. You leveled up! You are now level ${++user.level}`
 			);
 			user.xp = 0;
-			console.log('Level Up');
+			console.log(`${msg.author.id} Leveled Up`);
 		}
 
 		if (user.level == 5) {
@@ -111,7 +111,7 @@ client.on('message', msg => {
 				}>. You ranked up! You are now <@&734189094271320195>`
 			);
 			msg.member.role.add(elderRole);
-			console.log('Rank Up');
+			console.log(`${msg.author.id} Ranked Up`);
 		}
 
 		if (user.level == 10) {
@@ -121,7 +121,7 @@ client.on('message', msg => {
 				}>. You ranked up! You are now <@&734189143965564939>`
 			);
 			msg.member.role.add(legendRole);
-			console.log('Rank Up');
+			console.log(`${msg.author.id} Ranked Up`);
 		}
 
 		if (user.level == 15) {
@@ -131,7 +131,7 @@ client.on('message', msg => {
 				}>. You ranked up! You are now <@&734188797960388628>`
 			);
 			msg.member.role.add(veteranRole);
-			console.log('Rank Up');
+			console.log(`${msg.author.id} Ranked Up`);
 		}
 
 		updateUser(msg.author.id, user);
@@ -227,7 +227,7 @@ const activities_list = [
 	'with the %help command.',
 	'with Node.js',
 	'with the chill cafe™ server',
-	'https://www.pixilart.com/ataraxiacreates'
+	'Shoutout to ---'
 ]; // arraylist containing phrases
 
 client.on('ready', () => {
@@ -235,7 +235,7 @@ client.on('ready', () => {
 		const index = Math.floor(Math.random() * activities_list.length); // generates a random number between 1 and the length of the activities array list
 		client.user.setActivity('<activity>', { type: 'WATCHING' });
 		client.user.setActivity(activities_list[index]); // sets bot's activities to one of the phrases in the arraylist.
-		console.log(`Status Changed to "${activities_list[index]}"`)
+		console.log(`Status Changed to "${activities_list[index]}" (${index})`)
 	}, 10000); // Runs this every 10 seconds.
 });
 
