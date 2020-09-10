@@ -1,5 +1,9 @@
 const discord = require('discord.js');
 
+const canvas = require('canvas');
+
+const ytdl = require('ytdl-core');
+
 const client = new discord.Client();
 
 const fs = require('fs');
@@ -34,6 +38,7 @@ const helpEmbed = new discord.MessageEmbed()
         { name: `${prefix}created`, value: 'Displays Creation Date' },
         { name: `${prefix}help`, value: 'DMs Help Documentation' },
         { name: `${prefix}profile`, value: 'Displays Rank and Level Data (WIP)' },
+        { name: `${prefix}rickroll`, value: 'Plays the Rickroll in VC' },
         );
         
 //Profile Embed
@@ -140,13 +145,49 @@ client.on('message', msg => {
 	}
 
 	//Welcome Message
-client.on('guildMemberAdd', member => {
+client.on('guildMemberAdd', async member => {
   const channel = member.guild.channels.cache.find(ch => ch.name === '⌇😎⌇-public-chat');
   if (!channel) return;
   channel.send(`Welcome to the server, ${member}`);
   console.log('Member Joined')
 });
 
+//Welcome Message w/ canvas
+client.on('guildMemberAdd', async member => {
+	const channel = member.guild.channels.cache.find(ch => ch.name === '⌇😎⌇-public-chat');
+	if (!channel) return;
+
+	const canvas = canvas.createCanvas(700, 250);
+	const ctx = canvas.getContext('2d');
+
+	const background = await canvas.loadImage('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/735e5caa-855e-4c0d-8d02-9f8946e87f0b/dc0p8v9-d57bd85c-ae41-4d4e-bad6-2d81c71ba3c8.png/v1/fill/w_1096,h_729,strp/_c__the_library_cafe_by_malthuswolf_dc0p8v9-pre.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3siaGVpZ2h0IjoiPD04NTEiLCJwYXRoIjoiXC9mXC83MzVlNWNhYS04NTVlLTRjMGQtOGQwMi05Zjg5NDZlODdmMGJcL2RjMHA4djktZDU3YmQ4NWMtYWU0MS00ZDRlLWJhZDYtMmQ4MWM3MWJhM2M4LnBuZyIsIndpZHRoIjoiPD0xMjgwIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.z6JBFocchK7qkHrCiDDxnKhktaRqlpbxkYNrZyWbS6A');
+	ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+	ctx.strokeStyle = '#00FFFF';
+	ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+	// Slightly smaller text placed above the member's display name
+	ctx.font = '28px sans-serif';
+	ctx.fillStyle = '#ffffff';
+	ctx.fillText('Welcome to the server,', canvas.width / 2.5, canvas.height / 3.5);
+
+	// Add an exclamation point here and below
+	ctx.font = applyText(canvas, `${member.displayName}!`);
+	ctx.fillStyle = '#ffffff';
+	ctx.fillText(`${member.displayName}!`, canvas.width / 2.5, canvas.height / 1.8);
+
+	ctx.beginPath();
+	ctx.arc(125, 125, 100, 0, Math.PI * 2, true);
+	ctx.closePath();
+	ctx.clip();
+
+	const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ format: 'jpg' }));
+	ctx.drawImage(avatar, 25, 25, 200, 200);
+
+	const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'welcome-image.png');
+
+	channel.send(`Welcome to the server, ${member}!`, attachment);
+});
 
 	//General Text Commands
 	if (msg.content == `${prefix}ping`) {
@@ -166,65 +207,87 @@ client.on('guildMemberAdd', member => {
   }
 });
 
+//Play The Rickroll From Youtube
+client.on('message', message => {
+	if (message.content === `${prefix}rickroll`) {
+		if (message.channel.type === 'dm') return;
+
+		const voiceChannel = message.member.voice.channel;
+
+		if (!voiceChannel) {
+			return message.reply('Please join a voice channel first!');
+		}
+
+		voiceChannel.join().then(connection => {
+			const stream = ytdl('https://www.youtube.com/watch?v=dQw4w9WgXcQ', { filter: 'audioonly' });
+			const dispatcher = connection.play(stream);
+      console.log('Rickrolled!')
+      
+			dispatcher.on('finish', () => voiceChannel.leave());
+		});
+	}
+});
+
+//Kick Members Command
 client.on('message', message => {
   if (!message.guild) return;
   
-  if (message.content.startsWith(`${prefix}kick`)) {
-    const user = message.mentions.users.first();
-    if (user) {
-      const member = message.guild.member(user);
+if (message.content.startsWith(`${prefix}kick`)) {
+  const user = message.mentions.users.first();
+  if (user) {
+    const member = message.guild.member(user);
 
-      if (member) {
-        member
-          .kick('Optional reason that will display in the audit logs')
-          .then(() => {
-            message.reply(`Successfully kicked ${user.tag}`);
-            console.log('Kicked User');
-          })
-          .catch(err => {
-            message.reply('I was unable to kick the member');
-            console.error(err);
-          });
-      } else {
-        message.reply("That user isn't in this server!");
-      }
+    if (member) {
+      member
+        .kick('Optional reason that will display in the audit logs')
+        .then(() => {
+          message.reply(`Successfully kicked ${user.tag}`);
+          console.log('Kicked User');
+        })
+        .catch(err => {
+          message.reply('I was unable to kick the member');
+          console.error(err);
+        });
     } else {
-      message.reply("You didn't mention the user to kick!");
+      message.reply("That user isn't in this server!");
     }
+  } else {
+    message.reply("You didn't mention the user to kick!");
   }
+}
 });
 
+//Ban Members Command
 client.on('message', message => {
   if (!message.guild) return;
-
-  if (message.content.startsWith(`${prefix}ban`)) {
-    const user = message.mentions.users.first();
-    if (user) {
-      const member = message.guild.member(user);
-      if (member) {
-        member
-          .ban({
-            reason: 'They were naughty!',
-          })
-          .then(() => {
-            message.reply(`Successfully banned ${user.tag}`);
-            console.log('Banned User');
-          })
-          .catch(err => {
-            message.reply('I was unable to ban the member');
-            console.error(err);
-          });
-      } else {
-        message.reply("That user isn't in this server!");
-      }
+if (message.content.startsWith(`${prefix}ban`)) {
+  const user = message.mentions.users.first();
+  if (user) {
+    const member = message.guild.member(user);
+    if (member) {
+      member
+        .ban({
+          reason: 'They were naughty!',
+        })
+        .then(() => {
+          message.reply(`Successfully banned ${user.tag}`);
+          console.log('Banned User');
+        })
+        .catch(err => {
+          message.reply('I was unable to ban the member');
+          console.error(err);
+        });
     } else {
-      message.reply("You didn't mention the user to ban!");
+      message.reply("That user isn't in this server!");
     }
+  } else {
+    message.reply("You didn't mention the user to ban!");
   }
+}
 });
 
 const activities_list = [
-	'with the %help command.',
+	`with the ${prefix}rickroll`,
 	'with Node.js',
 	'with the chill cafe™ server',
 	'Shoutout to ---'
