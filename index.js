@@ -13,14 +13,20 @@ app.get('/', (req, res) => {
 
 app.listen(8080);
 
+client.on('ready', () => {
+  console.log('Bot Running!');
+});
+
 //prefix
 const prefix = '%';
 
 //Help Embed
 const helpEmbed = new discord.MessageEmbed()
       .setTitle('Help Documentation')
+      .setAuthor("Server Bot", "https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342")
       .setColor('#00ffff')
       .setDescription('chill cafe™')
+      .setThumbnail("https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342")
       .addFields(
         { name: `${prefix}ping`, value: 'Test Ping' },
         { name: `${prefix}server`, value: 'Displays Server Name' },
@@ -32,9 +38,11 @@ const helpEmbed = new discord.MessageEmbed()
         
 //Profile Embed
 const profileEmbed = new discord.MessageEmbed()
-      .setTitle('Help Documentation')
+      .setTitle('Your Profile')
+      .setAuthor("Server Bot", "https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342")
       .setColor('#00ffff')
       .setDescription('chill cafe™')
+      .setThumbnail("https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342")
       .addFields(
         { name: 'Current Rank', value: 'Coming Soon' },
         { name: 'Current  Level', value: 'Coming Soon' },
@@ -84,6 +92,7 @@ client.on('message', msg => {
 		);
 
 		user.xp += msgxp;
+		let levelUp = (user.level * levelrate) - user.xp
 
 		if (user.xp >= levelrate * user.level) {
 			msg.channel.send(
@@ -92,6 +101,7 @@ client.on('message', msg => {
 				}>. You leveled up! You are now level ${++user.level}`
 			);
 			user.xp = 0;
+			console.log('Level Up');
 		}
 
 		if (user.level == 5) {
@@ -100,7 +110,8 @@ client.on('message', msg => {
 					msg.author.id
 				}>. You ranked up! You are now <@&734189094271320195>`
 			);
-			msg.member.roles.add(elderRole);
+			msg.member.role.add(elderRole);
+			console.log('Rank Up');
 		}
 
 		if (user.level == 10) {
@@ -109,7 +120,8 @@ client.on('message', msg => {
 					msg.author.id
 				}>. You ranked up! You are now <@&734189143965564939>`
 			);
-			msg.member.roles.add(legendRole);
+			msg.member.role.add(legendRole);
+			console.log('Rank Up');
 		}
 
 		if (user.level == 15) {
@@ -118,7 +130,8 @@ client.on('message', msg => {
 					msg.author.id
 				}>. You ranked up! You are now <@&734188797960388628>`
 			);
-			msg.member.roles.add(veteranRole);
+			msg.member.role.add(veteranRole);
+			console.log('Rank Up');
 		}
 
 		updateUser(msg.author.id, user);
@@ -126,16 +139,14 @@ client.on('message', msg => {
 		updateUser(msg.author.id, { xp: 0, level: 1 });
 	}
 
-	//Welcome Message (unstable)
-	client. on('guildMemberAdd', member => {
-		const channel = member.guild.channels.cache.find(
-			ch => ch.name === '⌇😎⌇-public-chat'
-		);
+	//Welcome Message
+client.on('guildMemberAdd', member => {
+  const channel = member.guild.channels.cache.find(ch => ch.name === '⌇😎⌇-public-chat');
+  if (!channel) return;
+  channel.send(`Welcome to the server, ${member}`);
+  console.log('Member Joined')
+});
 
-		if (!channel) return;
-
-		channel.send(`Welcome to the server, ${member}`);
-	});
 
 	//General Text Commands
 	if (msg.content == `${prefix}ping`) {
@@ -148,17 +159,75 @@ client.on('message', msg => {
 		msg.channel.send(`Created On ${msg.guild.createdAt}`); //Creation Date
 	} else if (msg.content == `${prefix}help`) {
 		message.author.send(helpEmbed); //DM Help Embed
+		console.log('Help Sent');
   } else if (msg.content == `${prefix}profile`) {
     message.channel.send(profileEmbed); //Send Profile Embed
+    console.log('Profile Displayed');
   }
 });
 
+client.on('message', message => {
+  if (!message.guild) return;
+  
+  if (message.content.startsWith(`${prefix}kick`)) {
+    const user = message.mentions.users.first();
+    if (user) {
+      const member = message.guild.member(user);
+
+      if (member) {
+        member
+          .kick('Optional reason that will display in the audit logs')
+          .then(() => {
+            message.reply(`Successfully kicked ${user.tag}`);
+            console.log('Kicked User');
+          })
+          .catch(err => {
+            message.reply('I was unable to kick the member');
+            console.error(err);
+          });
+      } else {
+        message.reply("That user isn't in this server!");
+      }
+    } else {
+      message.reply("You didn't mention the user to kick!");
+    }
+  }
+});
+
+client.on('message', message => {
+  if (!message.guild) return;
+
+  if (message.content.startsWith(`${prefix}ban`)) {
+    const user = message.mentions.users.first();
+    if (user) {
+      const member = message.guild.member(user);
+      if (member) {
+        member
+          .ban({
+            reason: 'They were naughty!',
+          })
+          .then(() => {
+            message.reply(`Successfully banned ${user.tag}`);
+            console.log('Banned User');
+          })
+          .catch(err => {
+            message.reply('I was unable to ban the member');
+            console.error(err);
+          });
+      } else {
+        message.reply("That user isn't in this server!");
+      }
+    } else {
+      message.reply("You didn't mention the user to ban!");
+    }
+  }
+});
 
 const activities_list = [
 	'with the %help command.',
 	'with Node.js',
 	'with the chill cafe™ server',
-	'Shoutout to Star Trek'
+	'https://www.pixilart.com/ataraxiacreates'
 ]; // arraylist containing phrases
 
 client.on('ready', () => {
@@ -166,6 +235,7 @@ client.on('ready', () => {
 		const index = Math.floor(Math.random() * activities_list.length); // generates a random number between 1 and the length of the activities array list
 		client.user.setActivity('<activity>', { type: 'WATCHING' });
 		client.user.setActivity(activities_list[index]); // sets bot's activities to one of the phrases in the arraylist.
+		console.log(`Status Changed to "${activities_list[index]}"`)
 	}, 10000); // Runs this every 10 seconds.
 });
 
