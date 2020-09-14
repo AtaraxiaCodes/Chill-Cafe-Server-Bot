@@ -32,14 +32,14 @@ const config = require('./config.json'),
 const prefix = '%';
 
 //Help Embed
-const helpEmbed = new discord.MessageEmbed()
+const helpEmbed1 = new discord.MessageEmbed()
 	.setTitle('Help Documentation')
 	.setAuthor(
 		'Server Bot',
 		'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
 	)
 	.setColor('#00ffff')
-	.setDescription('chill cafe™')
+	.setDescription('Server Stat Commands')
 	.setThumbnail(
 		'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
 	)
@@ -49,8 +49,59 @@ const helpEmbed = new discord.MessageEmbed()
 		{ name: `${prefix}member`, value: 'Displays Member Count' },
 		{ name: `${prefix}created`, value: 'Displays Creation Date' },
 		{ name: `${prefix}help`, value: 'DMs Help Documentation' },
-		{ name: `${prefix}profile`, value: 'Displays Rank and Level Data (WIP)' },
+		{ name: `${prefix}profile`, value: 'Displays Rank and Level Data (WIP)' }
+	);
+
+const helpEmbed2 = new discord.MessageEmbed()
+	.setTitle('Help Documentation')
+	.setAuthor(
+		'Server Bot',
+		'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
+	)
+	.setColor('#00ffff')
+	.setDescription('Fun Commands')
+	.setThumbnail(
+		'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
+	)
+	.addFields(
 		{ name: `${prefix}rickroll`, value: 'Plays the Rickroll in VC' },
+		{ name: `${prefix}8ball`, value: 'Play an 8 Ball Game' },
+		{ name: `${prefix}tdgame`, value: 'Play a Truth or Dare Game' },
+		{ name: `${prefix}minesweeper`, value: 'Play a Minesweeper Game' }
+	);
+
+const helpEmbed4 = new discord.MessageEmbed()
+	.setTitle('Help Documentation')
+	.setAuthor(
+		'Server Bot',
+		'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
+	)
+	.setColor('#00ffff')
+	.setDescription('Stream Notification Commands')
+	.setThumbnail(
+		'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
+	)
+	.addFields(
+		{ name: `${prefix}add <twitchchannel>`, value: 'Add Your Twitch Channel' },
+		{
+			name: `${prefix}remove <twitchchannel>`,
+			value: 'Remove Your Twitch Channel'
+		},
+		{ name: `${prefix}list`, value: 'List All Twitch Channels and Status' }
+	);
+
+const helpEmbed3 = new discord.MessageEmbed()
+	.setTitle('Help Documentation')
+	.setAuthor(
+		'Server Bot',
+		'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
+	)
+	.setColor('#00ffff')
+	.setDescription('Music Commands')
+	.setThumbnail(
+		'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
+	)
+	.addFields(
 		{ name: `${prefix}play <url>`, value: 'Plays Song w/ Provide YT URL' },
 		{ name: `${prefix}skip`, value: 'Skips Current Song' },
 		{ name: `${prefix}stop`, value: 'Clears Queue and Exits VC' }
@@ -86,6 +137,9 @@ function getUser(id) {
 
 //Rank up and Level Up Messages
 client.on('message', msg => {
+	if (msg.author.client) return;
+	if (msg.channel.type === 'dm') return;
+
 	if (userExists(msg.author.id)) {
 		let user = getUser(msg.author.id);
 		let elderRole = msg.guild.roles.cache.find(
@@ -100,24 +154,27 @@ client.on('message', msg => {
 
 		user.xp += msgxp;
 		let levelUp = user.level * levelrate - user.xp;
-		
-  //(UNTESTED) Profile Embed
-  const profileEmbed = new discord.MessageEmbed()
-  	.setTitle('Profile')
-	  .setAuthor(
-		  'Server Bot',
-		  'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
-	   )
-	  .setColor('#00ffff')
-	  .setDescription('chill cafe™')
-	  .setThumbnail(
-		  'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
-	  )
-	  .addFields(
-		  { name: `Current Rank`, value: 'Coming Soon' },
-		  {name: `Current Level`, value: `${user.level}` },
-	  	{ name: `XP to Level Up`, value: `${user.level} * ${levelrate} - ${user.xp}` }
-	  );
+
+		//(UNTESTED) Profile Embed
+		const profileEmbed = new discord.MessageEmbed()
+			.setTitle('Profile')
+			.setAuthor(
+				'Server Bot',
+				'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
+			)
+			.setColor('#00ffff')
+			.setDescription('chill cafe™')
+			.setThumbnail(
+				'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
+			)
+			.addFields(
+				{ name: `Current Rank`, value: 'Coming Soon' },
+				{ name: `Current Level`, value: `${user.level}` },
+				{
+					name: `XP to Level Up`,
+					value: `${user.level} * ${levelrate} - ${user.xp}`
+				}
+			);
 
 		if (user.xp >= levelrate * user.level) {
 			msg.channel.send(
@@ -242,11 +299,13 @@ client.on('message', msg => {
 		msg.channel.send(`Created On ${msg.guild.createdAt}`); //Creation Date
 		console.log(`Creation Dage command used by ${msg.author.username}`);
 	} else if (msg.content == `${prefix}help`) {
-		message.author.send(helpEmbed); //DM Help Embed
-		console.log('Help Sent');
+		msg.author.send(helpEmbed1); //DM Server Stat Help Embed
+		msg.author.send(helpEmbed2); //DM Fun Help Embed
+		msg.author.send(helpEmbed3); //DM Music Help Embed
+		msg.author.send(helpEmbed3); //DM Stream Notification Help Embed
 		console.log(`Help command used by ${msg.author.username}`);
 	} else if (msg.content == `${prefix}profile`) {
-		message.channel.send(profileEmbed); //Send Profile Embed
+		msg.channel.send(profileEmbed); //Send Profile Embed
 		console.log('Profile Displayed');
 		console.log(`Profile command used by ${msg.author.username}`);
 	}
@@ -429,87 +488,294 @@ client.on('message', async message => {
 	if (message.author.client) return;
 	if (message.channel.type === 'dm') return;
 
-  if (msg.content == `${prefix}tdgame`) {
-    let retruth = [
-        "Do you like playing Minecraft?",
-        "Do you love anyone?",
-        "Are you dating someone?",
-        "You have a friend, and your friend has robbed a shop. What do you do?",
-        "Have you stole anything?",
-        "Your friend says, do you have any money for buy candy. What do you do?",
-        "What you were doing in bathroom?",
-      ];
-      let truth = (Math.floor(Math.random() * Math.floor(retruth.length)));
-        
-      let redare = [
-        "Go to your parents and tell about your pranks!",
-        'Say to your friend: "I love you xD"',
-        'Start your computer and say loudly "I DON\'T LIKE YOU..."',
-        "Go to your bed, and speak with yourself!",
-        "You must replace your profile picture to [this](https://imgur.com/gallery/IDc8oMJ)!",
-      ];
-      let dare = (Math.floor(Math.random() * Math.floor(redare.length)));
+	if (msg.content == `${prefix}tdgame`) {
+		let retruth = [
+			'Do you like playing Minecraft?',
+			'Do you love anyone?',
+			'Are you dating someone?',
+			'You have a friend, and your friend has robbed a shop. What do you do?',
+			'Have you stole anything?',
+			'Your friend says, do you have any money for buy candy. What do you do?',
+			'What you were doing in bathroom?'
+		];
+		let truth = Math.floor(Math.random() * Math.floor(retruth.length));
 
-    const pagetruth = new discord.MessageEmbed()
-    pagetruth.setColor("#0000FF")
-    pagetruth.setAuthor(
-		'Server Bot',
-		'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342')
-    pagetruth.setTitle("You choose: Truth!")
-    pagetruth.setDescription(`${retruth[truth]}\n☞ *You have to speak the truth, please tell!*`)
-    pagetruth.setTimestamp()
-    
-    const pagedare = new discord.MessageEmbed()
-    pagedare.setColor("#0000FF")
-    pagedare.setAuthor(
-		'Server Bot',
-		'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342')
-    pagedare.setTitle("You choose: Dare")
-    pagedare.setDescription(`${redare[dare]}\n☞ *You have a dare, go and do it!*`)
-    pagedare.setTimestamp()
-        
-      try {
-        const main = new discord.MessageEmbed()
-        main.setColor("#0000FF")
-        main.setAuthor(
-		'Server Bot',
-		'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342')
-        main.setTitle("Truth or Dare Game Started!")
-        main.setDescription("What you want to choice?\n\n**Truth** = 😇\n**Dare** = 👿\n\n*Please react with an emoji to contine!*")
-        main.setTimestamp()
-        
-  var mainMessage = await message.channel.send(main)
-      mainMessage.react("😇");
-      mainMessage.react("👿");
-      setTimeout(() => {
-        mainMessage.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
-        }, 150000);
-    } catch (error) {
-      console.error(error);
-    }
-    
-    const filter = (reaction, user) => user.id !== message.client.user.id;
-    const collector = mainMessage.createReactionCollector(filter, { time: 150000 });
-    
-    collector.on('collect', (reaction, reactionCollector) => {
+		let redare = [
+			'Go to your parents and tell about your pranks!',
+			'Say to your friend: "I love you xD"',
+			'Start your computer and say loudly "I DON\'T LIKE YOU..."',
+			'Go to your bed, and speak with yourself!',
+			'You must replace your profile picture to [this](https://imgur.com/gallery/IDc8oMJ)!'
+		];
+		let dare = Math.floor(Math.random() * Math.floor(redare.length));
 
-      switch (reaction.emoji.name) {
-    case "😇":
-      mainMessage.edit(pagetruth)
-      mainMessage.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
-      break;
-      
-    case "👿":
-      mainMessage.edit(pagedare)
-      mainMessage.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error));
-      break;
-      
-      default:
-      break;
-      }
-    });
-  }
+		const pagetruth = new discord.MessageEmbed();
+		pagetruth.setColor('#0000FF');
+		pagetruth.setAuthor(
+			'Server Bot',
+			'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
+		);
+		pagetruth.setTitle('You choose: Truth!');
+		pagetruth.setDescription(
+			`${retruth[truth]}\n☞ *You have to speak the truth, please tell!*`
+		);
+		pagetruth.setTimestamp();
+
+		const pagedare = new discord.MessageEmbed();
+		pagedare.setColor('#0000FF');
+		pagedare.setAuthor(
+			'Server Bot',
+			'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
+		);
+		pagedare.setTitle('You choose: Dare');
+		pagedare.setDescription(
+			`${redare[dare]}\n☞ *You have a dare, go and do it!*`
+		);
+		pagedare.setTimestamp();
+
+		try {
+			const main = new discord.MessageEmbed();
+			main.setColor('#0000FF');
+			main.setAuthor(
+				'Server Bot',
+				'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
+			);
+			main.setTitle('Truth or Dare Game Started!');
+			main.setDescription(
+				'What you want to choice?\n\n**Truth** = 😇\n**Dare** = 👿\n\n*Please react with an emoji to contine!*'
+			);
+			main.setTimestamp();
+
+			var mainMessage = await message.channel.send(main);
+			mainMessage.react('😇');
+			mainMessage.react('👿');
+			setTimeout(() => {
+				mainMessage.reactions
+					.removeAll()
+					.catch(error => console.error('Failed to clear reactions: ', error));
+			}, 150000);
+		} catch (error) {
+			console.error(error);
+		}
+
+		const filter = (reaction, user) => user.id !== message.client.user.id;
+		const collector = mainMessage.createReactionCollector(filter, {
+			time: 150000
+		});
+
+		collector.on('collect', (reaction, reactionCollector) => {
+			switch (reaction.emoji.name) {
+				case '😇':
+					mainMessage.edit(pagetruth);
+					mainMessage.reactions
+						.removeAll()
+						.catch(error =>
+							console.error('Failed to clear reactions: ', error)
+						);
+					break;
+
+				case '👿':
+					mainMessage.edit(pagedare);
+					mainMessage.reactions
+						.removeAll()
+						.catch(error =>
+							console.error('Failed to clear reactions: ', error)
+						);
+					break;
+
+				default:
+					break;
+			}
+		});
+	}
 });
+
+//(UNTESTED) Minesweeper
+client.on('message', msg => {
+	if (msg.content.startsWith(`${prefix}minesweeper`)) {
+		argDone = 0;
+		msgArg = msg.content.substr(prefix.length + 1).split(' ');
+		if (argTest(3)) {
+			for (var i = 0; i < 3; i++) {
+				if (
+					!isNaN(Number(msgArg[i])) &&
+					((4 <= Number(msgArg[i]) && Number(msgArg[i]) <= 16) ||
+						(i == 2 && 0 <= Number(msgArg[i])))
+				) {
+					msgArg[i] = Math.floor(Number(msgArg[i]));
+					argDone++;
+				}
+				if (msgArg[0] * msgArg[1] * 0.8 < msgArg[2]) {
+					msgArg[2] = Math.floor(msgArg[0] * msgArg[1] * 0.8);
+				}
+			}
+		}
+
+		if (argDone == 3) {
+			fieldArr = [];
+			for (var i = 0; i < msgArg[1]; i++) {
+				fieldArr.push([]);
+			}
+			for (var i = 0; i < msgArg[1]; i++) {
+				for (var j = 0; j < msgArg[0]; j++) {
+					fieldArr[i].push(10);
+				}
+			}
+			mineCount = msgArg[2];
+			loopCount = 0;
+			while (mineCount > 0) {
+				pointThisX = Math.floor(Math.random() * msgArg[0]);
+				pointThisY = Math.floor(Math.random() * msgArg[1]);
+				if (fieldArr[pointThisY][pointThisX] != 11) {
+					fieldArr[pointThisY][pointThisX] = 11;
+					mineCount--;
+				}
+				loopCount++;
+				if (loopCount >= 2000) {
+					break;
+				}
+			}
+			for (
+				var i = Math.ceil(msgArg[0] / 2 - 2);
+				i < Math.floor(msgArg[0] / 2 + 2);
+				i++
+			) {
+				for (
+					var j = Math.ceil(msgArg[1] / 2 - 2);
+					j < Math.floor(msgArg[1] / 2 + 2);
+					j++
+				) {
+					if (fieldArr[j][i] == 11) {
+						msgArg[2]--;
+					}
+					fieldArr[j][i] = 10;
+				}
+			}
+			for (var i = 0; i < msgArg[1]; i++) {
+				for (var j = 0; j < msgArg[0]; j++) {
+					if (fieldArr[i][j] != 11) {
+						nearMine = 0;
+						for (var k = 0; k < 3; k++) {
+							if (
+								(k == 0 && 0 < i) ||
+								k == 1 ||
+								(k == 2 && i < msgArg[1] - 1)
+							) {
+								if (0 < j) {
+									if (fieldArr[i - 1 + k][j - 1] == 11) nearMine++;
+								}
+								if (fieldArr[i - 1 + k][j] == 11) nearMine++;
+								if (j < msgArg[0]) {
+									if (fieldArr[i - 1 + k][j + 1] == 11) nearMine++;
+								}
+							}
+						}
+						if (nearMine != 0) {
+							fieldArr[i][j] = nearMine - 1;
+						}
+					}
+				}
+			}
+			emojiArr = [];
+			for (var i = 0; i < msgArg[1]; i++) {
+				emojiArr.push([]);
+			}
+			for (var i = 0; i < msgArg[1]; i++) {
+				for (var j = 0; j < msgArg[0]; j++) {
+					emojiArr[i].push(0);
+				}
+			}
+			for (var i = 0; i < msgArg[1]; i++) {
+				for (var j = 0; j < msgArg[0]; j++) {
+					switch (fieldArr[i][j]) {
+						case 10:
+							emojiArr[i][j] = tileEmoji;
+							break;
+						case 11:
+							emojiArr[i][j] = mineEmoji;
+							break;
+						default:
+							emojiArr[i][j] = numEmoji[fieldArr[i][j]];
+					}
+				}
+			}
+			for (var i = 0; i < msgArg[1]; i++) {
+				for (var j = 0; j < msgArg[0]; j++) {
+					emojiArr[i][j] = '||' + emojiArr[i][j] + '||';
+				}
+			}
+			for (
+				var i = Math.ceil(msgArg[0] / 2 - 2);
+				i < Math.floor(msgArg[0] / 2 + 2);
+				i++
+			) {
+				for (
+					var j = Math.ceil(msgArg[1] / 2 - 2);
+					j < Math.floor(msgArg[1] / 2 + 2);
+					j++
+				) {
+					emojiArr[j][i] = emojiArr[j][i].replace(/\|\|/g, '');
+				}
+			}
+			heightLeft = msgArg[1];
+			heightDone = 0;
+			for (var i = 0; i < Math.ceil(fieldArr.length / 4); i++) {
+				msgToSend = '';
+				heightThis = Math.min(heightLeft, 4);
+				heightLeft -= heightThis;
+				for (var j = heightDone; j < heightDone + heightThis; j++) {
+					for (var k = 0; k < msgArg[0]; k++) {
+						msgToSend += emojiArr[j][k];
+					}
+					msgToSend += '\n';
+				}
+				heightDone += heightThis;
+				msg.channel.send(msgToSend);
+			}
+			msg.channel.send(
+				'**Size: ' +
+					msgArg[0] +
+					'x' +
+					msgArg[1] +
+					'**\n**Mine Count: ' +
+					msgArg[2] +
+					'**\n**Have fun :D**'
+			);
+		} else {
+			msgToSend = new discord.MessageEmbed()
+				.setColor('#121212')
+				.setAuthor('How to use', '')
+				.setDescription(
+					'-g {width(min:4,max:16)} {height(min:4,max:16)} {mine}'
+				);
+			msg.channel.send(msgToSend);
+		}
+	}
+});
+
+function varSet() {
+	tileEmoji = '<:t_:750200739380330526>';
+	mineEmoji = '<:m_:750200739674062900>';
+	numEmoji = [
+		'<:1_:750200739132997663>',
+		'<:2_:750200738927345686>',
+		'<:3_:750200739296575579>',
+		'<:4_:750200739720069190>',
+		'<:5_:750200739338387576>',
+		'<:6_:750200739330261063>',
+		'<:7_:750200739242180660>',
+		'<:8_:750200739187654677>',
+		'<:9_:750200739363684454>'
+	];
+}
+function argTest(num) {
+	for (var i = 0; i < num; i++) {
+		if (msgArg[i] === undefined) {
+			return 0;
+		}
+	}
+	return 1;
+}
 
 //(UNTESTED) Kick Members Command
 client.on('message', message => {
@@ -571,13 +837,13 @@ client.on('message', message => {
 
 //(WIP) Twitch Stream Messages - https://github.com/etacarinaea/discord-twitch-bot
 const args = process.argv.slice(2),
-      channelPath = __dirname + '/.channels',
-      token = args[0],
-      twitchClientID = args[1],
-      interval = args[2] * 1000,
-      apiUrl = 'https://api.twitch.tv/kraken',
-	     // two minutes
-	    timeout = 2 * 60 * 1000;
+	channelPath = __dirname + '/.channels',
+	token = args[0],
+	twitchClientID = args[1],
+	interval = args[2] * 1000,
+	apiUrl = 'https://api.twitch.tv/kraken',
+	// two minutes
+	timeout = 2 * 60 * 1000;
 var servers = [];
 
 function leadingZero(d) {
@@ -978,8 +1244,8 @@ function formatDate(date) {
 		'December'
 	];
 	let day = date.getDate(),
-	  	month = date.getMonth(),
-		  year = date.getFullYear();
+		month = date.getMonth(),
+		year = date.getFullYear();
 	return `${day} ${monthNames[parseInt(month, 10)]} ${year}`;
 }
 
@@ -1132,6 +1398,15 @@ client.on('ready', () => {
 		client.user.setActivity(activities_list[index]); // sets bot's activities to one of the phrases in the arraylist.
 	}, 10000); // Runs this every 10 seconds.
 });
+
+//Error Catches
+client.on('shardError', error => {
+	console.error('A websocket connection encountered an error:', error);
+});
+process.on('unhandledRejection', error => {
+	console.error('Unhandled promise rejection:', error);
+});
+process.on('warning', console.warn);
 
 client.login(process.env.TOKEN).then(token => {
 	if (token) {
