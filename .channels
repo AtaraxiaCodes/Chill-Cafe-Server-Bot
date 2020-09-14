@@ -1,1 +1,10 @@
-[]
+[
+    {
+        "name": "𝓬𝓱𝓲𝓵𝓵 𝓬𝓪𝓯𝓮™",
+        "lastPrefix": "!",
+        "prefix": "/",
+        "role": "botadmin",
+        "discordChannels": [],
+        "twitchChannels": []
+    }
+]
