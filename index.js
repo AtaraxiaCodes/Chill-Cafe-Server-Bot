@@ -83,10 +83,7 @@ const helpEmbed4 = new discord.MessageEmbed()
 	)
 	.addFields(
 		{ name: `${prefix}add <twitchchannel>`, value: 'Add Your Twitch Channel' },
-		{
-			name: `${prefix}remove <twitchchannel>`,
-			value: 'Remove Your Twitch Channel'
-		},
+		{ name: `${prefix}remove <twitchchannel>`, value: 'Remove Your Twitch Channel'},
 		{ name: `${prefix}list`, value: 'List All Twitch Channels and Status' }
 	);
 
@@ -776,6 +773,45 @@ function argTest(num) {
 	}
 	return 1;
 }
+
+//(UNTESTED) Infection Game
+async function getInfectedFunction(message) {
+    let author = message.author.id;
+    let member = message.mentions.users.first();
+    if(!member) return;
+    let infection = config.infectionRoleID;
+    if (message.guild.members.cache.get(author).roles.cache.get(infection)) return;
+    if (message.guild.members.cache.get(member.id).roles.cache.get(infection)) {
+        let chance = Math.random() * 100;
+        if (chance <= 100) {
+              await(message.guild.members.cache.get(author).roles.add(infection));
+              message.channel.send(`<@${author}> has been infected!`);
+              console.log(`${author} has been infected!`)
+        };
+    }
+}
+
+async function giveInfectionFunction(message) {
+    let pingee = message.mentions.users.first();
+    if(!pingee) return;
+    let infection = config.infectionRoleID;
+    if(message.guild.members.cache.get(pingee.id).roles.cache.get(infection)) return;
+    if(message.member.roles.cache.get(infection)) {
+        let chance = Math.random() * 100;
+        if (chance <= 100) {
+            await(message.guild.members.cache.get(pingee.id).roles.add(infection));
+            message.channel.send(`<@${pingee.id}> has been infected by <@${message.author.id}>!`);
+            console.log(`${pingee.id} has been infected by ${message.author.id}!`)
+        };
+    }
+}
+
+client.on("message", message => {
+  if (message.channel.type === "dm") return;
+  if (message.author.type === "bot") return;
+  giveInfectionFunction(message);
+  getInfectedFunction(message);
+});
 
 //(UNTESTED) Kick Members Command
 client.on('message', message => {

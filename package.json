@@ -1,7 +1,7 @@
 {
   "name": "chill-cafe-Server-Bot",
   "version": "1.0.0",
-  "description": "",
+  "description": "The official server bot",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
