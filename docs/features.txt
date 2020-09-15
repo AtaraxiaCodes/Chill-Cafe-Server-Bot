@@ -1,0 +1,41 @@
+Leveling for Chat Messages
+Assign Roles for Leveling
+  Elder @ Level 5
+  Legend @ Level 10
+  Veteran @ Level 15
+
+Server Stat Messages
+  Server Name
+  Member Count
+  Creation Date
+
+Profile Embed
+  Displays Level
+  Displays Rank
+  Displays XP to Next Level
+
+Help Embed
+
+Fun Commands
+  8Ball
+  Truth or Dare
+  Minesweeper
+  Rickroll in VC
+
+Music Commands
+  Plays Music via Youtube URL
+  Skips Music in Queue
+  Stops Music
+
+Streaming Notifications
+  Twitch Stream Notifications
+  Youtube Stream Notifications
+  
+Idle Chat Infection Game
+
+Moderator Commands
+  Kick
+  Ban
+  
+Hosted With Repl.it and UpTimeRobot
+

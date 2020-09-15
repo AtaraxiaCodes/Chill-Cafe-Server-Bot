@@ -1,0 +1,12 @@
+Current Changelog:
+Chill Cafe Bot v1.3
+  Implemented changelog documenting.
+  
+  Recoded all commands except:
+    Twitch Notifications
+    Youtube Notifications
+    Youtube Music Player
+  so that they in a proper command exporter and handler.
+  
+Previous Changelogs:
+No Previous Changelogs
