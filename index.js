@@ -1,8 +1,8 @@
 const discord = require('discord.js');
 const client = new discord.Client();
 
-//Prefix & Token
-const { prefix, token, message, channel, youtubers, youtubeKey, twitchClientId, infectionRoleID } = require('./config.json');
+//Configuration Files
+const { prefix, token, mongodbUrl, id, clientSecret, domain, port, message, channel, youtubers, youtubeKey, twitchClientId, infectionRoleID } = require('./config.json');
 
 //Cooldown
 const cooldowns = new discord.Collection();
@@ -18,18 +18,47 @@ const canvas = require('canvas'),
       Parser = require('rss-parser'),
       parser = new Parser(),
       Youtube = require('simple-youtube-api'),
-      youtube = new Youtube(youtubeKey);
+      youtube = new Youtube(youtubeKey),
+      mongoose = require("mongoose");
 
 
-//Web Server
-app.get('/', (req, res) => {
-  res.send("Chill Cafe Bot v1.3! Made by Ataraxia and Star Trek."),
-	res.end();
+//Dashboard
+const GuildSettings = require("./models/settings");
+const Dashboard = require("./dashboard/dashboard");
+
+client.on("message", async (message) => {
+  const reply = (...arguments) => message.channel.send(...arguments);
+
+  if (message.author.bot) return;
+  if (!message.channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) return;
+
+  var storedSettings = await GuildSettings.findOne({ gid: message.guild.id });
+  if (!storedSettings) {
+    const newSettings = new GuildSettings({
+      gid: message.guild.id
+    });
+    await newSettings.save().catch(()=>{});
+    storedSettings = await GuildSettings.findOne({ gid: message.guild.id });
+  }
+
+  if (message.content.indexOf(storedSettings.prefix) !== 0) return;
+
+  const args = message.content.slice(storedSettings.prefix.length).trim().split(/ +/g);
+  const command = args.shift().toLowerCase();
+
+  if (command === "ping") {
+    const roundtripMessage = await reply("Pong!");
+    return roundtripMessage.edit(`*${roundtripMessage.createdTimestamp - message.createdTimestamp}ms*`);
+  }
 });
 
-app.listen(8080);
+mongoose.connect(mongodbUrl, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 
+//Chat Exp & Leveling/Ranking
 const levelrate = 20;
 const msgxp = 1;
 
@@ -232,7 +261,7 @@ client.on('message', message => {
 	}
 
 	if (!cooldowns.has(command.name)) {
-		cooldowns.set(command.name, new Discord.Collection());
+		cooldowns.set(command.name, new discord.Collection());
 	}
 
 	const now = Date.now();
@@ -1004,12 +1033,16 @@ client.login(token).then(token => {
 		servers = JSON.parse(file);
 		console.log('---');
 		console.log(`${client.user.username} Running!`);
+		console.log(`${client.guilds.cache.size} Guilds | ${client.channels.cache.size} Channels | ${client.users.cache.size} Users`);
 		console.log('Prefix: ' + prefix);
 		console.log('---');
 
 		// tick once on startup
 		tick();
 		setInterval(tick, interval);
+		
+		//Dashhboard
+		Dashboard(client);
 	} else {
 		console.log('An error occured while logging in:', err);
 		process.exit(1);

@@ -10,9 +10,16 @@
   "author": "AtaraxiaPlayz, Star Trek",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "canvas": "^2.6.1",
     "discord.js": "^12.3.1",
+    "ejs": "^3.1.5",
     "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "memorystore": "^1.6.2",
+    "mongoose": "^5.10.5",
+    "passport": "^0.4.1",
+    "passport-discord": "^0.1.4",
     "rss-parser": "^3.9.0",
     "simple-youtube-api": "^5.2.1",
     "ytdl-core": "^3.2.2"
