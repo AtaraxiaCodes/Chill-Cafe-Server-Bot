@@ -2,6 +2,8 @@ Current Changelog:
 Chill Cafe Bot v1.5
   Implemented Advanced Youtube Music Player
   Removed Previous Youtube Music Player
+  Implemented Mute, Unmute, Clear, and Report commands
+  Implemented WhoIs command
   Updated Help Documentation
 
 Previous Changelogs:
