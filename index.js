@@ -16,7 +16,9 @@ const {
 	SOUNDCLOUD_CLIENT_ID,
 	twitchClientId,
 	mongodbUrl,
-	infectionRoleID
+	infectionRoleID,
+	moderatorRoleID,
+	mutedRoleID,
 } = require('./config.json');
 
 //Cooldown
@@ -357,7 +359,7 @@ async function getInfectedFunction(message) {
 async function giveInfectionFunction(message) {
 	let pingee = message.mentions.users.first();
 	if (!pingee) return;
-	let infection = config.infectionRoleID;
+	let infection = infectionRoleID;
 	if (message.guild.members.cache.get(pingee.id).roles.cache.get(infection))
 		return;
 	if (message.member.roles.cache.get(infection)) {
@@ -892,9 +894,7 @@ async function getYoutubeChannelInfos(name) {
 	return channel;
 }
 
-/**
- * Check for new videos
- */
+//Check For A New Video
 async function check() {
 	console.log('Checking...');
 	config.youtubers.forEach(async youtuber => {
@@ -944,16 +944,6 @@ client.on('ready', () => {
 		client.user.setActivity(activities_list[index]); // sets bot's activities to one of the phrases in the arraylist.
 	}, 10000); // Runs this every 10 seconds.
 });
-
-
-//Error Catches
-client.on('shardError', error => {
-	console.error('A websocket connection encountered an error:', error);
-});
-process.on('unhandledRejection', error => {
-	console.error('Unhandled promise rejection:', error);
-});
-process.on('warning', console.warn);
 
 
 //Login

@@ -10,18 +10,20 @@ module.exports = {
     		'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
 	    )
 	    .setColor('#00ffff')
-	    .setDescription('Server Stat Commands')
+	    .setDescription('Server Commands')
 	    .setThumbnail(
 	    	'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
 	    )
-	.addFields(
-		{ name: `${prefix}ping`, value: 'Test Ping' },
-		{ name: `${prefix}server`, value: 'Displays Server Name' },
-		{ name: `${prefix}member`, value: 'Displays Member Count' },
-		{ name: `${prefix}created`, value: 'Displays Creation Date' },
-		{ name: `${prefix}help`, value: 'DMs Help Documentation' },
-		{ name: `${prefix}profile`, value: 'Displays Rank and Level Data (WIP)' }
-	);
+	    .addFields(
+		    { name: `${prefix}ping`, value: 'Test Ping' },
+    		{ name: `${prefix}server`, value: 'Displays Server Name' },
+    		{ name: `${prefix}member`, value: 'Displays Member Count' },
+    		{ name: `${prefix}created`, value: 'Displays Creation Date' },
+	    	{ name: `${prefix}help`, value: 'DMs Help Documentation' },
+	    	{ name: `${prefix}profile`, value: 'Displays Rank and Level Data (WIP)' },
+	    	{ name: `${prefix}whois <member>`, value: 'Displays a Member\'s Server Data' },
+	    	{ name: `${prefix}report <member>`, value: 'Repost a Member for Moderator Review' }
+	    );
 
     const helpEmbed2 = new discord.MessageEmbed()
     	.setTitle('Help Documentation')
