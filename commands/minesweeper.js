@@ -1,6 +1,6 @@
 module.exports = {
-	name: 'ping',
-	description: 'Ping for testing',
+	name: 'minesweeper',
+	description: 'Play a game of Minesweeper',
 	execute(message, args) {
 		argDone = 0;
 		msgArg = message.content.substr(prefix.length + 1).split(' ');

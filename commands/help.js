@@ -4,16 +4,16 @@ module.exports = {
 	cooldown: 5,
 	execute(message, args) {
 	  const helpEmbed1 = new discord.MessageEmbed()
-	.setTitle('Help Documentation')
-	.setAuthor(
-		'Server Bot',
-		'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
-	)
-	.setColor('#00ffff')
-	.setDescription('Server Stat Commands')
-	.setThumbnail(
-		'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
-	)
+    	.setTitle('Help Documentation')
+    	.setAuthor(
+    		'Server Bot',
+    		'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
+	    )
+	    .setColor('#00ffff')
+	    .setDescription('Server Stat Commands')
+	    .setThumbnail(
+	    	'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
+	    )
 	.addFields(
 		{ name: `${prefix}ping`, value: 'Test Ping' },
 		{ name: `${prefix}server`, value: 'Displays Server Name' },
@@ -36,9 +36,9 @@ module.exports = {
     	)
     	.addFields(
     		{ name: `${prefix}rickroll`, value: 'Plays the Rickroll in VC' },
-    		{ name: `${prefix}8ball`, value: 'Play an 8 Ball Game' },
+    		{ name: `${prefix}8ball <question>`, value: 'Play an 8 Ball Game' },
 	    	{ name: `${prefix}truthordare`, value: 'Play a Truth or Dare Game' },
-	    	{ name: `${prefix}minesweeper`, value: 'Play a Minesweeper Game' }
+	    	{ name: `${prefix}minesweeper <width> <height> <mines>`, value: 'Play a Minesweeper Game' }
 	    );
 
     const helpEmbed3 = new discord.MessageEmbed()
