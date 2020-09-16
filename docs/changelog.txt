@@ -1,4 +1,13 @@
 Current Changelog:
+Chill Cafe Bot v1.5
+  Implemented Advanced Youtube Music Player
+  Removed Previous Youtube Music Player
+  Updated Help Documentation
+
+Previous Changelogs:
+Chill Cafe Bot v1.4
+  Implemented a simple Dashboard using Express & MongoDB
+
 Chill Cafe Bot v1.3
   Implemented changelog documenting.
   
@@ -7,6 +16,3 @@ Chill Cafe Bot v1.3
     Youtube Notifications
     Youtube Music Player
   so that they in a proper command exporter and handler.
-  
-Previous Changelogs:
-No Previous Changelogs

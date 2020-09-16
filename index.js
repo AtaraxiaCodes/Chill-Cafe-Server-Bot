@@ -2,61 +2,88 @@ const discord = require('discord.js');
 const client = new discord.Client();
 
 //Configuration Files
-const { prefix, token, mongodbUrl, id, clientSecret, domain, port, message, channel, youtubers, youtubeKey, twitchClientId, infectionRoleID } = require('./config.json');
+const {
+	prefix,
+	token,
+	id,
+	clientSecret,
+	domain,
+	port,
+	message,
+	channel,
+	youtubers,
+	YOUTUBE_API_KEY,
+	SOUNDCLOUD_CLIENT_ID,
+	twitchClientId,
+	mongodbUrl,
+	infectionRoleID
+} = require('./config.json');
 
 //Cooldown
 const cooldowns = new discord.Collection();
 
+
+//Escape Regex
+const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+
 //Dependencies
 const canvas = require('canvas'),
-      ytdl = require('ytdl-core'),
-      queue = new Map(),
-      https = require('https'),
-      fs = require('fs'),
-      express = require('express'),
-      app = express(),
-      Parser = require('rss-parser'),
-      parser = new Parser(),
-      Youtube = require('simple-youtube-api'),
-      youtube = new Youtube(youtubeKey),
-      mongoose = require("mongoose");
-
+	ytdl = require('ytdl-core'),
+	queue = new Map(),
+	https = require('https'),
+	fs = require('fs'),
+	express = require('express'),
+	app = express(),
+	Parser = require('rss-parser'),
+	parser = new Parser(),
+	Youtube = require('simple-youtube-api'),
+	youtube = new Youtube(YOUTUBE_API_KEY),
+	mongoose = require('mongoose');
 
 //Dashboard
-const GuildSettings = require("./models/settings");
-const Dashboard = require("./dashboard/dashboard");
+const GuildSettings = require('./models/settings');
+const Dashboard = require('./dashboard/dashboard');
 
-client.on("message", async (message) => {
-  const reply = (...arguments) => message.channel.send(...arguments);
+client.on('message', async message => {
+	const reply = (...arguments) => message.channel.send(...arguments);
 
-  if (message.author.bot) return;
-  if (!message.channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) return;
+	if (message.author.bot) return;
+	if (!message.channel.permissionsFor(message.guild.me).has('SEND_MESSAGES'))
+		return;
 
-  var storedSettings = await GuildSettings.findOne({ gid: message.guild.id });
-  if (!storedSettings) {
-    const newSettings = new GuildSettings({
-      gid: message.guild.id
-    });
-    await newSettings.save().catch(()=>{});
-    storedSettings = await GuildSettings.findOne({ gid: message.guild.id });
-  }
+	var storedSettings = await GuildSettings.findOne({ gid: message.guild.id });
+	if (!storedSettings) {
+		const newSettings = new GuildSettings({
+			gid: message.guild.id
+		});
+		await newSettings.save().catch(() => {});
+		storedSettings = await GuildSettings.findOne({ gid: message.guild.id });
+	}
 
-  if (message.content.indexOf(storedSettings.prefix) !== 0) return;
+	if (message.content.indexOf(storedSettings.prefix) !== 0) return;
 
-  const args = message.content.slice(storedSettings.prefix.length).trim().split(/ +/g);
-  const command = args.shift().toLowerCase();
+	const args = message.content
+		.slice(storedSettings.prefix.length)
+		.trim()
+		.split(/ +/g);
+	const command = args.shift().toLowerCase();
 
-  if (command === "ping") {
-    const roundtripMessage = await reply("Pong!");
-    return roundtripMessage.edit(`*${roundtripMessage.createdTimestamp - message.createdTimestamp}ms*`);
-  }
+	if (command === 'ping') {
+		const roundtripMessage = await reply('Pong!');
+		return roundtripMessage.edit(
+			`*${roundtripMessage.createdTimestamp - message.createdTimestamp}ms*`
+		);
+	}
 });
 
-mongoose.connect(mongodbUrl, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
-
+mongoose.connect(
+	mongodbUrl,
+	{
+		useNewUrlParser: true,
+		useUnifiedTopology: true
+	}
+);
 
 //Chat Exp & Leveling/Ranking
 const levelrate = 20;
@@ -169,7 +196,6 @@ client.on('message', message => {
 	}
 });
 
-
 //(UNTESTED) Welcome Message w/ canvas
 client.on('guildMemberAdd', async member => {
 	const channel = member.guild.channels.cache.find(
@@ -222,13 +248,14 @@ client.on('guildMemberAdd', async member => {
 	);
 
 	channel.send(`Welcome to the server, ${member}!`, attachment);
-	console.log(`Welcome message sent to ${member}`)
+	console.log(`Welcome message sent to ${member}`);
 });
-
 
 //Dynamic Command Handler
 client.commands = new discord.Collection();
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = fs
+	.readdirSync('./commands')
+	.filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 
@@ -238,23 +265,36 @@ for (const file of commandFiles) {
 client.on('message', message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-	const args = message.content.slice(prefix.length).trim().split(/ +/);
+  const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(PREFIX)})\\s*`);
+  if (!prefixRegex.test(message.content)) return;
+
+  const [, matchedPrefix] = message.content.match(prefixRegex);
+  
+	const args = message.content
+		.slice(prefix.length)
+		.trim()
+		.split(/ +/);
 	const commandName = args.shift().toLowerCase();
 
-	const command = client.commands.get(commandName)
-		|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+	const command =
+		client.commands.get(commandName) ||
+		client.commands.find(
+			cmd => cmd.aliases && cmd.aliases.includes(commandName)
+		);
 
 	if (!command) return;
 
 	if (command.guildOnly && message.channel.type === 'dm') {
-		return message.reply('I can\'t execute that command inside DMs!');
+		return message.reply("I can't execute that command inside DMs!");
 	}
 
 	if (command.args && !args.length) {
 		let reply = `You didn't provide any arguments, ${message.author}!`;
 
 		if (command.usage) {
-			reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
+			reply += `\nThe proper usage would be: \`${prefix}${command.name} ${
+				command.usage
+			}\``;
 		}
 
 		return message.channel.send(reply);
@@ -273,7 +313,11 @@ client.on('message', message => {
 
 		if (now < expirationTime) {
 			const timeLeft = (expirationTime - now) / 1000;
-			return message.reply(`Please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+			return message.reply(
+				`Please wait ${timeLeft.toFixed(
+					1
+				)} more second(s) before reusing the \`${command.name}\` command.`
+			);
 		}
 	}
 
@@ -285,166 +329,54 @@ client.on('message', message => {
 	} catch (error) {
 		console.error(error);
 		message.reply('Oops, there was a problem executing that command!');
+		message.reply(
+			'If you feel like an error has occured, tell us at https://forms.gle/YNKWgAK5FP9u5eEz7'
+		);
 	}
 });
-
-
-//(UNTESTED) Play Youtube Music
-client.on('message', async message => {
-	if (message.author.bot) return;
-	if (!message.content.startsWith(prefix)) return;
-
-	const serverQueue = queue.get(message.guild.id);
-
-	//Listens for Commands
-	if (message.content.startsWith(`${prefix}play`)) {
-		execute(message, serverQueue);
-		return;
-	} else if (message.content.startsWith(`${prefix}skip`)) {
-		skip(message, serverQueue);
-		return;
-	} else if (message.content.startsWith(`${prefix}stop`)) {
-		stop(message, serverQueue);
-		return;
-	} else {
-		message.channel.send('You need to enter a valid command!');
-	}
-});
-
-//Arguments for Music
-async function execute(message, serverQueue) {
-	const args = message.content.split(' ');
-
-	const voiceChannel = message.member.voice.channel;
-	if (!voiceChannel)
-		return message.channel.send(
-			'You need to be in a voice channel to play music!'
-		);
-	const permissions = voiceChannel.permissionsFor(message.client.user);
-	if (!permissions.has('CONNECT') || !permissions.has('SPEAK')) {
-		return message.channel.send(
-			'I need the permissions to join and speak in your voice channel!'
-		);
-	}
-
-	const songInfo = await ytdl.getInfo(args[1]);
-	const song = {
-		title: songInfo.title,
-		url: songInfo.video_url
-	};
-
-	if (!serverQueue) {
-		const queueContruct = {
-			textChannel: message.channel,
-			voiceChannel: voiceChannel,
-			connection: null,
-			songs: [],
-			volume: 5,
-			playing: true
-		};
-
-		queue.set(message.guild.id, queueContruct);
-
-		queueContruct.songs.push(song);
-
-		try {
-			var connection = await voiceChannel.join();
-			queueContruct.connection = connection;
-			play(message.guild, queueContruct.songs[0]);
-		} catch (err) {
-			console.log(err);
-			queue.delete(message.guild.id);
-			return message.channel.send(err);
-		}
-	} else {
-		serverQueue.songs.push(song);
-		return message.channel.send(`${song.title} has been added to the queue!`);
-		console.log(`${song.title} is in song queue.`);
-	}
-}
-
-//Skips Music
-function skip(message, serverQueue) {
-	if (!message.member.voice.channel)
-		return message.channel.send(
-			'You have to be in a voice channel to stop the music!'
-		);
-	if (!serverQueue)
-		return message.channel.send('There is no song that I could skip!');
-	serverQueue.connection.dispatcher.end();
-}
-
-//Stops Music & Exits VC
-function stop(message, serverQueue) {
-	if (!message.member.voice.channel)
-		return message.channel.send(
-			'You have to be in a voice channel to stop the music!'
-		);
-	serverQueue.songs = [];
-	console.log('Cleared Queue');
-	serverQueue.connection.dispatcher.end();
-	console.log('Exited VC');
-}
-
-//Plays Music
-function play(guild, song) {
-	const serverQueue = queue.get(guild.id);
-	if (!song) {
-		serverQueue.voiceChannel.leave();
-		queue.delete(guild.id);
-		return;
-	}
-
-	const dispatcher = serverQueue.connection
-		.play(ytdl(song.url))
-		.on('finish', () => {
-			serverQueue.songs.shift();
-			play(guild, serverQueue.songs[0]);
-		})
-		.on('error', error => console.error(error));
-	dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-	serverQueue.textChannel.send(`Start playing: **${song.title}**`);
-	console.log(`Playing ${song.title}`);
-}
 
 
 //(UNTESTED) Infection Game
 async function getInfectedFunction(message) {
-    let author = message.author.id;
-    let member = message.mentions.users.first();
-    if(!member) return;
-    let infection = config.infectionRoleID;
-    if (message.guild.members.cache.get(author).roles.cache.get(infection)) return;
-    if (message.guild.members.cache.get(member.id).roles.cache.get(infection)) {
-        let chance = Math.random() * 100;
-        if (chance <= 100) {
-              await(message.guild.members.cache.get(author).roles.add(infection));
-              message.channel.send(`<@${author}> has been infected!`);
-              console.log(`${author} has been infected!`)
-        };
-    }
+	let author = message.author.id;
+	let member = message.mentions.users.first();
+	if (!member) return;
+	let infection = config.infectionRoleID;
+	if (message.guild.members.cache.get(author).roles.cache.get(infection))
+		return;
+	if (message.guild.members.cache.get(member.id).roles.cache.get(infection)) {
+		let chance = Math.random() * 100;
+		if (chance <= 100) {
+			await message.guild.members.cache.get(author).roles.add(infection);
+			message.channel.send(`<@${author}> has been infected!`);
+			console.log(`${author} has been infected!`);
+		}
+	}
 }
 
 async function giveInfectionFunction(message) {
-    let pingee = message.mentions.users.first();
-    if(!pingee) return;
-    let infection = config.infectionRoleID;
-    if(message.guild.members.cache.get(pingee.id).roles.cache.get(infection)) return;
-    if(message.member.roles.cache.get(infection)) {
-        let chance = Math.random() * 100;
-        if (chance <= 100) {
-            await(message.guild.members.cache.get(pingee.id).roles.add(infection));
-            message.channel.send(`<@${pingee.id}> has been infected by <@${message.author.id}>!`);
-            console.log(`${pingee.id} has been infected by ${message.author.id}!`)
-        };
-    }
+	let pingee = message.mentions.users.first();
+	if (!pingee) return;
+	let infection = config.infectionRoleID;
+	if (message.guild.members.cache.get(pingee.id).roles.cache.get(infection))
+		return;
+	if (message.member.roles.cache.get(infection)) {
+		let chance = Math.random() * 100;
+		if (chance <= 100) {
+			await message.guild.members.cache.get(pingee.id).roles.add(infection);
+			message.channel.send(
+				`<@${pingee.id}> has been infected by <@${message.author.id}>!`
+			);
+			console.log(`${pingee.id} has been infected by ${message.author.id}!`);
+		}
+	}
 }
 
-client.on("message", message => {
-  if (message.channel.type === "dm") return;
-  if (message.author.type === "bot") return;
-  giveInfectionFunction(message);
-  getInfectedFunction(message);
+client.on('message', message => {
+	if (message.channel.type === 'dm') return;
+	if (message.author.type === 'bot') return;
+	giveInfectionFunction(message);
+	getInfectedFunction(message);
 });
 
 
@@ -1033,15 +965,20 @@ client.login(token).then(token => {
 		servers = JSON.parse(file);
 		console.log('---');
 		console.log(`${client.user.username} Running!`);
-		console.log(`${client.guilds.cache.size} Guilds | ${client.channels.cache.size} Channels | ${client.users.cache.size} Users`);
+		console.log(
+			`${client.guilds.cache.size} Guilds | ${
+				client.channels.cache.size
+			} Channels | ${client.users.cache.size} Users`
+		);
 		console.log('Prefix: ' + prefix);
+		console.log('Bot Issue Form: https://forms.gle/YNKWgAK5FP9u5eEz7');
 		console.log('---');
 
 		// tick once on startup
 		tick();
 		setInterval(tick, interval);
-		
-		//Dashhboard
+
+		//Dashboard
 		Dashboard(client);
 	} else {
 		console.log('An error occured while logging in:', err);

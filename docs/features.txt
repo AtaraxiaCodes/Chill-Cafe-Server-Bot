@@ -1,3 +1,5 @@
+Simple Dashboard
+
 Leveling for Chat Messages
 Assign Roles for Leveling
   Elder @ Level 5
@@ -23,9 +25,13 @@ Fun Commands
   Rickroll in VC
 
 Music Commands
-  Plays Music via Youtube URL
-  Skips Music in Queue
-  Stops Music
+  Play Music via Youtube URL
+  Play Music via Youtube Search Query
+  Play Music via SoundCloud URL
+  Search for Music to Play
+  Play Playlist via Youtube URL
+  Play Playlist via Youtube Search Query
+  
 
 Streaming Notifications
   Twitch Stream Notifications

@@ -190,5 +190,5 @@ module.exports = async (client) => {
         renderTemplate(res, req, "settings.ejs", { guild, settings: storedSettings, alert: "Your settings have been saved." });
     });
 
-  app.listen(config.port, null, null, () => console.log(`Dashboard is up and running on port ${config.port}.`));
+  app.listen(config.port, null, null, () => console.log(`Dashboard is up and running on port ${config.port}. \n---`));
 };

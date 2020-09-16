@@ -53,8 +53,19 @@ module.exports = {
 		    'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
 	    )
 	    .addFields(
-	    	{ name: `${prefix}play <url>`, value: 'Plays Song w/ Provide YT URL' },
+	    	{ name: `${prefix}play <youtube url>`, value: 'Plays Song w/ Provided YouTube URL' },
+	    	{ name: `${prefix}play <search query>`, value: 'Plays Song w/ Search Query' },
+	    	{ name: `${prefix}play <soundcloud url>`, value: 'Plays Song w/ Provide SoundCloud URL' },
+	    	{ name: `${prefix}np`, value: 'Displays Currently Playing Song' },
+	    	{ name: `${prefix}queue`, value: 'Displays Current Queue' },
+	    	{ name: `${prefix}loop`, value: 'Loops Current Song' },
+	    	{ name: `${prefix}shuffle`, value: 'Shuffles Current Playlist' },
+	    	{ name: `${prefix}volume`, value: 'Change Volume Level' },
+	    	{ name: `${prefix}lyrics`, value: 'Displays Lyrics for Current Song' },
+	    	{ name: `${prefix}pause`, value: 'Pauses Current Song' },
+	    	{ name: `${prefix}resume`, value: 'Resumes Current Song' },
 	    	{ name: `${prefix}skip`, value: 'Skips Current Song' },
+	    	{ name: `${prefix}skipto <# in queue>`, value: 'Skips Current Song to Song in Queue' },
 	    	{ name: `${prefix}stop`, value: 'Clears Queue and Exits VC' }
 	    );
 
