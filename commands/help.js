@@ -22,7 +22,7 @@ module.exports = {
 	    	{ name: `${prefix}help`, value: 'DMs Help Documentation' },
 	    	{ name: `${prefix}profile`, value: 'Displays Rank and Level Data (WIP)' },
 	    	{ name: `${prefix}whois <member>`, value: 'Displays a Member\'s Server Data' },
-	    	{ name: `${prefix}report <member>`, value: 'Repost a Member for Moderator Review' }
+	    	{ name: `${prefix}report <member>`, value: 'Report a Member for Moderator Review' }
 	    );
 
     const helpEmbed2 = new discord.MessageEmbed()
@@ -40,7 +40,11 @@ module.exports = {
     		{ name: `${prefix}rickroll`, value: 'Plays the Rickroll in VC' },
     		{ name: `${prefix}8ball <question>`, value: 'Play an 8 Ball Game' },
 	    	{ name: `${prefix}truthordare`, value: 'Play a Truth or Dare Game' },
-	    	{ name: `${prefix}minesweeper <width> <height> <mines>`, value: 'Play a Minesweeper Game' }
+	    	{ name: `${prefix}minesweeper <width> <height> <mines>`, value: 'Play a Minesweeper Game' },
+	    	{ name: `${prefix}coins <optional member>`, value: 'Displays your coins or specified member\'s coins' },
+	    	{ name: `${prefix}work`, value: 'Work for coins' },
+	    	{ name: `${prefix}crime`, value: 'Commit a crime' },
+	    	{ name: `${prefix}rob <member>`, value: 'Rob a specified user' }
 	    );
 
     const helpEmbed3 = new discord.MessageEmbed()
