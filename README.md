@@ -31,6 +31,12 @@ This is the official server bot for the Chill Cafe server. You may reuse the cod
 * Minesweeper
 * Rickroll in VC
 
+### Economy Commands
+* Coins
+* Work
+* Crime
+* Rob
+
 ### Music Commands
 * Play Music via Youtube URL
 * Play Music via Youtube Search Query
@@ -45,8 +51,11 @@ This is the official server bot for the Chill Cafe server. You may reuse the cod
  
 ### Idle Chat Infection Game
 
-### Moderator Commands
+### Moderation Commands
 * Kick
 * Ban
+* Mute
+* Unmute
+* Report
 
-### Hosted With Repl.it and UpTimeRobot
+### Hosted With Repl.it and 

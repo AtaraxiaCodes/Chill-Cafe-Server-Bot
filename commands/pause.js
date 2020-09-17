@@ -1,4 +1,4 @@
-const { canModifyQueue } = require("../util/EvobotUtil");
+const { canModifyQueue } = require("../util/ServerBotUtil");
 
 module.exports = {
   name: "pause",

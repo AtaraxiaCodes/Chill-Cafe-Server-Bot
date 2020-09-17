@@ -18,16 +18,14 @@ const {
 	mongodbUrl,
 	infectionRoleID,
 	moderatorRoleID,
-	mutedRoleID,
+	mutedRoleID
 } = require('./config.json');
 
 //Cooldown
 const cooldowns = new discord.Collection();
 
-
 //Escape Regex
-const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
+const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 //Dependencies
 const canvas = require('canvas'),
@@ -267,11 +265,13 @@ for (const file of commandFiles) {
 client.on('message', message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-  const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(PREFIX)})\\s*`);
-  if (!prefixRegex.test(message.content)) return;
+	const prefixRegex = new RegExp(
+		`^(<@!?${client.user.id}>|${escapeRegex(PREFIX)})\\s*`
+	);
+	if (!prefixRegex.test(message.content)) return;
 
-  const [, matchedPrefix] = message.content.match(prefixRegex);
-  
+	const [, matchedPrefix] = message.content.match(prefixRegex);
+
 	const args = message.content
 		.slice(prefix.length)
 		.trim()
@@ -337,7 +337,6 @@ client.on('message', message => {
 	}
 });
 
-
 //(UNTESTED) Infection Game
 async function getInfectedFunction(message) {
 	let author = message.author.id;
@@ -380,7 +379,6 @@ client.on('message', message => {
 	giveInfectionFunction(message);
 	getInfectedFunction(message);
 });
-
 
 //(WIP) Twitch Stream Messages - https://github.com/etacarinaea/discord-twitch-bot
 const args = process.argv.slice(2),
@@ -766,7 +764,6 @@ client.on('message', message => {
 	}
 });
 
-
 //(WIP) Youtube Notifier
 const startAt = Date.now();
 const lastVideos = {};
@@ -928,7 +925,6 @@ async function check() {
 	});
 }
 
-
 //Bot Status
 const activities_list = [
 	`with ${prefix}help`,
@@ -944,7 +940,6 @@ client.on('ready', () => {
 		client.user.setActivity(activities_list[index]); // sets bot's activities to one of the phrases in the arraylist.
 	}, 10000); // Runs this every 10 seconds.
 });
-
 
 //Login
 client.login(token).then(token => {
