@@ -5,7 +5,7 @@ module.exports = {
 	cooldown: 5,
 	execute(message, args) {
 		message.channel.send(profileEmbed); //Send Profile Embed
-    console.log('Profile Displayed');
-    console.log(`Profile command used by ${message.author.username}`);
-	},
+		console.log('Profile Displayed');
+		console.log(`Profile command used by ${message.author.username}`);
+	}
 };

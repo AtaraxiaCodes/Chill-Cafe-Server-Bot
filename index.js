@@ -131,7 +131,7 @@ client.on('message', message => {
 
 		//(UNTESTED) Profile Embed
 		const profileEmbed = new discord.MessageEmbed()
-			.setTitle('Profile')
+			.setTitle(`${message.author.id}\'s Profile`)
 			.setAuthor(
 				'Server Bot',
 				'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'

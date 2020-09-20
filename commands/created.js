@@ -5,6 +5,6 @@ module.exports = {
 	cooldown: 5,
 	execute(message, args) {
 		message.channel.send(`Created On ${message.guild.createdAt}`);
-    console.log(`Creation Dage command used by ${message.author.username}`);
-	},
+		console.log(`Creation Dage command used by ${message.author.username}`);
+	}
 };
