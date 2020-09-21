@@ -1,4 +1,4 @@
-const { play } = require('../include/play');
+const { play } = require('../util/PlayUtil');
 const { YOUTUBE_API_KEY, SOUNDCLOUD_CLIENT_ID } = require('../config.json');
 const ytdl = require('ytdl-core');
 const YouTubeAPI = require('simple-youtube-api');

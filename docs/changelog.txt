@@ -5,6 +5,7 @@ Chill Cafe Bot v1.5
   Implemented Mute, Unmute, Clear, and Report commands
   Implemented WhoIs command
   Updated Help Documentation
+  Implemented Console Colors
 
 Previous Changelogs:
 Chill Cafe Bot v1.4

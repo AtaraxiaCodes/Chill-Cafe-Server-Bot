@@ -21,9 +21,6 @@ const {
 	mutedRoleID
 } = require('./config.json');
 
-//Cooldown
-const cooldowns = new discord.Collection();
-
 //Escape Regex
 const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -42,7 +39,7 @@ const canvas = require('canvas'),
 	mongoose = require('mongoose');
 
 //Dashboard
-const GuildSettings = require('./models/settings');
+const GuildSettings = require('./util/MongoUtil');
 const Dashboard = require('./dashboard/dashboard');
 
 client.on('message', async message => {
@@ -77,6 +74,7 @@ client.on('message', async message => {
 	}
 });
 
+//MongoDB Connection
 mongoose
 	.connect(
 		mongodbUrl,
@@ -102,28 +100,14 @@ mongoose.connection.once('open', function(d) {
 });
 
 //Chat Exp & Leveling/Ranking
-const levelrate = 20;
-const msgxp = 1;
+const { addexp } = require('./util/LevelUtil');
 
-function userExists(id) {
-	let data = JSON.parse(fs.readFileSync('data.json'));
+client.on('message', async message => {
+	if (message.author.bot) return;
+	if (!message.guild) return;
 
-	return data[id] != null;
-}
-
-function updateUser(id, profile) {
-	let data = JSON.parse(fs.readFileSync('data.json'));
-
-	data[id] = profile;
-
-	fs.writeFileSync('data.json', JSON.stringify(data));
-}
-
-function getUser(id) {
-	let data = JSON.parse(fs.readFileSync('data.json'));
-
-	return data[id];
-}
+	return addexp(message);
+});
 
 //Rank up and Level Up Messages
 client.on('message', message => {
@@ -144,27 +128,6 @@ client.on('message', message => {
 
 		user.xp += msgxp;
 		let levelUp = user.level * levelrate - user.xp;
-
-		//(UNTESTED) Profile Embed
-		const profileEmbed = new discord.MessageEmbed()
-			.setTitle(`${message.author.id}\'s Profile`)
-			.setAuthor(
-				'Server Bot',
-				'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
-			)
-			.setColor('#00ffff')
-			.setDescription('chill cafe™')
-			.setThumbnail(
-				'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
-			)
-			.addFields(
-				{ name: `Current Rank`, value: 'Coming Soon' },
-				{ name: `Current Level`, value: `${user.level}` },
-				{
-					name: `XP to Level Up`,
-					value: `${user.level} * ${levelrate} - ${user.xp}`
-				}
-			);
 
 		if (user.xp >= levelrate * user.level) {
 			message.channel.send(
@@ -208,11 +171,11 @@ client.on('message', message => {
 
 		updateUser(message.author.id, user);
 	} else {
-		updateUser(message.author.id, { xp: 0, level: 1 });
+		updateUser(message.displayName, { xp: 0, level: 1 });
 	}
 });
 
-//(UNTESTED) Welcome Message w/ canvas
+//Welcome Message w/ canvas
 client.on('guildMemberAdd', async member => {
 	const channel = member.guild.channels.cache.find(
 		ch => ch.name === '⌇😎⌇-public-chat'
@@ -269,6 +232,7 @@ client.on('guildMemberAdd', async member => {
 
 //Dynamic Command Handler
 client.commands = new discord.Collection();
+const cooldowns = new discord.Collection();
 const commandFiles = fs
 	.readdirSync('./commands')
 	.filter(file => file.endsWith('.js'));
@@ -445,12 +409,12 @@ function exitHandler(opt, err) {
 	}
 	if (opt.save) {
 		console.log(
-			'\x1b[35m%s\x1b[0m',
+			'\x1b[35mTwitch:\x1b[0m',
 			'Saving channels to ' + channelPath + ' before exiting'
 		);
-		console.log('\x1b[35m%s\x1b[0m', JSON.stringify(servers));
+		console.log('\x1b[35mTwitch:\x1b[0m', JSON.stringify(servers));
 		fs.writeFileSync(channelPath, JSON.stringify(servers, null, 4));
-		console.log('\x1b[35m%s\x1b[0m', 'Done');
+		console.log('\x1b[35mTwitch:\x1b[0m', 'Done');
 	}
 	if (opt.exit) {
 		process.exit();
@@ -547,14 +511,14 @@ function apiCallback(server, twitchChannel, res) {
 				for (let i = 0; i < channels.length; i++) {
 					channels[i]
 						.sendEmbed(twitchEmbed)
-						.then(print("Sent embed to channel '" + channels[i].name + "'."));
+						.then(console.log('\x1b[35mTwitch:\x1b[0m', "Sent embed to channel '" + channels[i].name + "'."));
 				}
 				twitchChannel.online = true;
 				twitchChannel.timestamp = Date.now();
 			} else if (defaultChannel) {
 				defaultChannel
 					.sendEmbed(twitchEmbed)
-					.then(print("Sent embed to channel '" + defaultChannel.name + "'."));
+					.then(console.log('\x1b[35mTwitch:\x1b[0m', "Sent embed to channel '" + defaultChannel.name + "'."));
 				twitchChannel.online = true;
 				twitchChannel.timestamp = Date.now();
 			}
@@ -605,7 +569,7 @@ client.on('message', message => {
 		try {
 			permission = message.member.roles.exists('name', server.role);
 		} catch (err) {
-			print(server.role + ' is not a role on the server', err);
+			console.log('\x1b[35mTwitch:\x1b[0m', server.role + ' is not a role on the server', err);
 		}
 
 		let index;
@@ -979,8 +943,12 @@ client.on('ready', () => {
 //Login
 client.login(token).then(token => {
 	if (token) {
-		console.log('\x1b[34mDiscord:\x1b[0m Logged in with token', '\x1b[33m' + token, '\x1b[0m');
-		console.log('\x1b[35m%s\x1b[0m', 'Reading file ' + channelPath);
+		console.log(
+			'\x1b[34mDiscord:\x1b[0m Logged in with token',
+			'\x1b[33m' + token,
+			'\x1b[0m'
+		);
+		console.log('\x1b[35mTwitch:\x1b[0m Reading file ' + channelPath);
 		var file = fs.readFileSync(channelPath, { encoding: 'utf-8' });
 		servers = JSON.parse(file);
 		console.log('---');
@@ -1005,7 +973,10 @@ client.login(token).then(token => {
 		//Dashboard
 		Dashboard(client);
 	} else {
-		console.log('\x1b[34mDiscord:\x1b[0m An error occured while logging in:', err);
+		console.log(
+			'\x1b[34mDiscord:\x1b[0m An error occured while logging in:',
+			err
+		);
 		process.exit(1);
 	}
 });

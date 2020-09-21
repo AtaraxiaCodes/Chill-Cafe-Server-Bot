@@ -23,6 +23,7 @@
     "mongoose": "^5.10.5",
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
+    "quick.db": "^7.1.2",
     "rss-parser": "^3.9.0",
     "simple-youtube-api": "^5.2.1",
     "soundcloud-downloader": "^0.1.6",

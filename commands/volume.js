@@ -1,4 +1,4 @@
-const { canModifyQueue } = require('../util/ServerBotUtil');
+const { canModifyQueue } = require('../util/MusicUtil');
 
 module.exports = {
 	name: 'volume',

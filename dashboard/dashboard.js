@@ -9,7 +9,7 @@ const config = require('../config');
 const ejs = require('ejs');
 const bodyParser = require('body-parser');
 const Discord = require('discord.js');
-const GuildSettings = require('../models/settings');
+const GuildSettings = require('../util/MongoUtil');
 
 // We instantiate express app and the session store.
 const app = express();

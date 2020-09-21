@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const { play } = require('../include/play');
+const { play } = require('../util/PlayUtil');
 const {
 	YOUTUBE_API_KEY,
 	MAX_PLAYLIST_SIZE,
