@@ -25,8 +25,8 @@ module.exports = {
 		let profileEmbed = new discord.MessageEmbed()
 			.setAuthor(user.username, message.guild.iconURL())
 			.setColor('#000FF0')
-			.setThumbnail(user.avatarURL()).setDescription(`**LEVEL** - ${level}
-**XP** - ${remxp}/${levelxp}`);
+			.setThumbnail(user.avatarURL()).setDescription(`**LEVEL**: ${level}
+**XP**: ${remxp}/${levelxp}`);
 
 		message.channel.send(profileEmbed);
 	}

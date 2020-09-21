@@ -5,15 +5,10 @@ module.exports = {
 	execute(message, args) {
 		const helpEmbed1 = new discord.MessageEmbed()
 			.setTitle('Help Documentation')
-			.setAuthor(
-				'Server Bot',
-				'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
-			)
+			.setAuthor('Server Bot', './images/pfp.jpg')
 			.setColor('#00ffff')
 			.setDescription('Server Commands')
-			.setThumbnail(
-				'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
-			)
+			.setThumbnail('./images/pfp.jpg')
 			.addFields(
 				{ name: `${prefix}ping`, value: 'Test Ping' },
 				{ name: `${prefix}server`, value: 'Displays Server Name' },
@@ -36,15 +31,10 @@ module.exports = {
 
 		const helpEmbed2 = new discord.MessageEmbed()
 			.setTitle('Help Documentation')
-			.setAuthor(
-				'Server Bot',
-				'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
-			)
+			.setAuthor('Server Bot', './images/pfp.jpg')
 			.setColor('#00ffff')
 			.setDescription('Fun Commands')
-			.setThumbnail(
-				'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
-			)
+			.setThumbnail('./images/pfp.jpg')
 			.addFields(
 				{ name: `${prefix}rickroll`, value: 'Plays the Rickroll in VC' },
 				{ name: `${prefix}8ball <question>`, value: 'Play an 8 Ball Game' },
@@ -64,15 +54,10 @@ module.exports = {
 
 		const helpEmbed3 = new discord.MessageEmbed()
 			.setTitle('Help Documentation')
-			.setAuthor(
-				'Server Bot',
-				'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
-			)
+			.setAuthor('Server Bot', './images/pfp.jpg')
 			.setColor('#00ffff')
 			.setDescription('Music Commands')
-			.setThumbnail(
-				'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
-			)
+			.setThumbnail('./images/pfp.jpg')
 			.addFields(
 				{
 					name: `${prefix}play <youtube url>`,
@@ -104,15 +89,10 @@ module.exports = {
 
 		const helpEmbed4 = new discord.MessageEmbed()
 			.setTitle('Help Documentation')
-			.setAuthor(
-				'Server Bot',
-				'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
-			)
+			.setAuthor('Server Bot', './images/pfp.jpg')
 			.setColor('#00ffff')
 			.setDescription('Stream Notification Commands')
-			.setThumbnail(
-				'https://cdna.artstation.com/p/assets/images/images/009/476/384/large/paradox-beatbox-logo-emblem.jpg?1519215342'
-			)
+			.setThumbnail('./images/pfp.jpg')
 			.addFields(
 				{
 					name: `${prefix}add <twitchchannel>`,

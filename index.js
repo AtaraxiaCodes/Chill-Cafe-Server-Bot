@@ -18,7 +18,8 @@ const {
 	mongodbUrl,
 	infectionRoleID,
 	moderatorRoleID,
-	mutedRoleID
+	mutedRoleID,
+	inviteLink
 } = require('./config.json');
 
 //Escape Regex
@@ -85,7 +86,7 @@ mongoose
 	)
 	.catch(error => handleError(error));
 mongoose.connection.on('error', function(e) {
-	console.log('Mongoose: Can not connect Error: ' + e);
+	console.log('\x1b[34mMongoose:\x1b[0m Can not connect Error: ' + e);
 	var { client } = new discord.Client({ disableEveryone: true });
 	client.commands = new discord.Collection();
 	process.exit();
@@ -109,7 +110,7 @@ client.on('message', async message => {
 	return addexp(message);
 });
 
-//Welcome Message w/ canvas
+//Welcome Message
 client.on('guildMemberAdd', async member => {
 	const channel = member.guild.channels.cache.find(
 		ch => ch.name === '⌇😎⌇-public-chat'
@@ -119,15 +120,12 @@ client.on('guildMemberAdd', async member => {
 	const canvas = canvas.createCanvas(700, 250);
 	const ctx = canvas.getContext('2d');
 
-	const background = await canvas.loadImage(
-		'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/735e5caa-855e-4c0d-8d02-9f8946e87f0b/dc0p8v9-d57bd85c-ae41-4d4e-bad6-2d81c71ba3c8.png/v1/fill/w_1096,h_729,strp/_c__the_library_cafe_by_malthuswolf_dc0p8v9-pre.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3siaGVpZ2h0IjoiPD04NTEiLCJwYXRoIjoiXC9mXC83MzVlNWNhYS04NTVlLTRjMGQtOGQwMi05Zjg5NDZlODdmMGJcL2RjMHA4djktZDU3YmQ4NWMtYWU0MS00ZDRlLWJhZDYtMmQ4MWM3MWJhM2M4LnBuZyIsIndpZHRoIjoiPD0xMjgwIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.z6JBFocchK7qkHrCiDDxnKhktaRqlpbxkYNrZyWbS6A'
-	);
+	const background = await canvas.loadImage('./images/welcomeImage.jpg');
 	ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
 	ctx.strokeStyle = '#00FFFF';
 	ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
-	// Slightly smaller text placed above the member's display name
 	ctx.font = '28px sans-serif';
 	ctx.fillStyle = '#ffffff';
 	ctx.fillText(
@@ -136,7 +134,6 @@ client.on('guildMemberAdd', async member => {
 		canvas.height / 3.5
 	);
 
-	// Add an exclamation point here and below
 	ctx.font = applyText(canvas, `${member.displayName}!`);
 	ctx.fillStyle = '#ffffff';
 	ctx.fillText(
@@ -251,7 +248,41 @@ client.on('message', message => {
 	}
 });
 
-//(UNTESTED) Infection Game
+//Anti-Link/Bad Words System
+const { badwords } = require('./blacklistedwords.json');
+
+function is_url(str) {
+	let regexp = /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
+	if (regexp.test(str)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+client.on('message', async message => {
+	if (message.author.bot) return;
+	if (!message.member.hasPermission('ADMINISTRATOR')) {
+		if (is_url(message.content) === true) {
+			message.delete();
+			return message.channel.send('You can not send link here :/');
+		}
+
+		let confirm = false;
+		var i;
+		for (i = 0; i < badwords.length; i++) {
+			if (message.content.toLowerCase().includes(badwords[i].toLowerCase()))
+				confirm = true;
+		}
+
+		if (confirm) {
+			message.delete();
+			return message.channel.send('You are not allowed to send badwords here');
+		}
+	}
+});
+
+//Idle Infection Game
 async function getInfectedFunction(message) {
 	let author = message.author.id;
 	let member = message.mentions.users.first();
@@ -297,36 +328,12 @@ client.on('message', message => {
 	getInfectedFunction(message);
 });
 
-//(WIP) Twitch Stream Messages - https://github.com/etacarinaea/discord-twitch-bot
-const args = process.argv.slice(2),
-	channelPath = __dirname + '/.channels',
-	twitchClientID = args[1],
-	interval = args[2] * 1000,
+//Twitch Stream Alert
+const channelPath = __dirname + '/.channels',
+	interval = 10 * 1000,
 	apiUrl = 'https://api.twitch.tv/kraken',
-	// two minutes
-	timeout = 2 * 60 * 1000;
+	timeout = 120000;
 var servers = [];
-
-function leadingZero(d) {
-	if (d < 10) {
-		return '0' + d;
-	} else {
-		return d;
-	}
-}
-
-// adds a timestamp before msg/err
-function print(msg, err) {
-	var date = new Date();
-	var h = leadingZero(date.getHours());
-	var m = leadingZero(date.getMinutes());
-	var s = leadingZero(date.getSeconds());
-
-	console.log('[' + h + ':' + m + ':' + s + ']', msg);
-	if (err) {
-		console.log(err);
-	}
-}
 
 function indexOfObjectByName(array, value) {
 	for (let i = 0; i < array.length; i++) {
@@ -339,7 +346,7 @@ function indexOfObjectByName(array, value) {
 
 function exitHandler(opt, err) {
 	if (err) {
-		print(err);
+		console.log(err);
 	}
 	if (opt.save) {
 		console.log(
@@ -354,11 +361,6 @@ function exitHandler(opt, err) {
 		process.exit();
 	}
 }
-
-process.on('exit', exitHandler.bind(null, { save: true }));
-process.on('SIGINT', exitHandler.bind(null, { exit: true }));
-process.on('SIGTERM', exitHandler.bind(null, { exit: true }));
-process.on('uncaughtException', exitHandler.bind(null, { exit: true }));
 
 function callApi(server, twitchChannel, callback, getStreamInfo) {
 	var opt;
@@ -378,7 +380,7 @@ function callApi(server, twitchChannel, callback, getStreamInfo) {
 			}
 		};
 	} catch (err) {
-		print(err);
+		console.log(err);
 		return;
 	}
 
@@ -395,7 +397,7 @@ function callApi(server, twitchChannel, callback, getStreamInfo) {
 				try {
 					json = JSON.parse(body);
 				} catch (err) {
-					print(err);
+					console.log(err);
 					return;
 				}
 				if (json.status == 404) {
@@ -406,7 +408,7 @@ function callApi(server, twitchChannel, callback, getStreamInfo) {
 			});
 		})
 		.on('error', err => {
-			print(err);
+			console.log(err);
 		});
 }
 
@@ -467,7 +469,7 @@ function apiCallback(server, twitchChannel, res) {
 				twitchChannel.timestamp = Date.now();
 			}
 		} catch (err) {
-			print(err);
+			console.log(err);
 		}
 	} else if (res.stream === null) {
 		twitchChannel.online = false;
@@ -495,9 +497,8 @@ client.on('message', message => {
 		if (index == -1) {
 			servers.push({
 				name: message.guild.name,
-				lastPrefix: '!',
-				prefix: '/',
-				role: 'botadmin',
+				prefix: prefix,
+				role: 'Server Bot',
 				discordChannels: [],
 				twitchChannels: []
 			});
@@ -611,17 +612,6 @@ client.on('message', message => {
 						msg += '\n';
 					}
 					msg += '```';
-				} else if (message.content.substring(11, 17) == 'prefix') {
-					let newPrefix = message.content.substring(18, 19);
-					if (newPrefix.replace(/\s/g, '').length === 0) {
-						msg += 'Please specify an argument';
-					} else if (newPrefix == server.prefix) {
-						msg += 'Prefix already is ' + server.prefix;
-					} else {
-						server.lastPrefix = server.prefix;
-						server.prefix = newPrefix;
-						msg += 'Changed prefix to ' + server.prefix;
-					}
 				} else if (message.content.substring(11, 15) == 'role') {
 					if (message.content.substring(16).replace(/\s/g, '').length === 0) {
 						msg += 'Please specify an argument';
@@ -669,7 +659,6 @@ client.on('message', message => {
 						'configure channel add example\n' +
 						'\nOptions:\n' +
 						'  list        List current configurations\n' +
-						'  prefix      Character to use in front of commands\n' +
 						'  role        Role permitting usage of add and remove\n' +
 						'  channel     Channel(s) to post in, empty list will use the first channel\n' +
 						'      add         Add a discord channel to the list\n' +
@@ -687,18 +676,10 @@ client.on('message', message => {
 					'[configure args|list|add channel_name|remove channel_name]'
 			);
 		}
-	} else if (message.content[0] == server.lastPrefix) {
-		message.reply(
-			'The prefix was changed from `' +
-				server.lastPrefix +
-				'` to `' +
-				server.prefix +
-				'`. Please use the new prefix.'
-		);
 	}
 });
 
-//(WIP) Youtube Notifier
+//Youtube Notifier
 const startAt = Date.now();
 const lastVideos = {};
 

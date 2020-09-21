@@ -6,6 +6,8 @@ Chill Cafe Bot v1.5
   Implemented WhoIs command
   Updated Help Documentation
   Implemented Console Colors
+  Implemented New Level, Rank, and Profile System
+  Implemented New Blacklisted Words and Anti-Link System
 
 Previous Changelogs:
 Chill Cafe Bot v1.4
