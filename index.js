@@ -77,13 +77,29 @@ client.on('message', async message => {
 	}
 });
 
-mongoose.connect(
-	mongodbUrl,
-	{
-		useNewUrlParser: true,
-		useUnifiedTopology: true
-	}
-);
+mongoose
+	.connect(
+		mongodbUrl,
+		{
+			useNewUrlParser: true,
+			useUnifiedTopology: true
+		}
+	)
+	.catch(error => handleError(error));
+mongoose.connection.on('error', function(e) {
+	console.log('Mongoose: Can not connect Error: ' + e);
+	var { client } = new discord.Client({ disableEveryone: true });
+	client.commands = new discord.Collection();
+	process.exit();
+});
+mongoose.connection.once('open', function(d) {
+	console.log(
+		'\x1b[34mMongoose:\x1b[0m connected to \x1b[33m' +
+			mongoose.connection.host +
+			' \x1b[0m'
+	);
+	console.log('---');
+});
 
 //Chat Exp & Leveling/Ranking
 const levelrate = 20;
@@ -157,7 +173,7 @@ client.on('message', message => {
 				}>. You leveled up! You are now level ${++user.level}`
 			);
 			user.xp = 0;
-			console.log(`${message.author.username} Leveled Up`);
+			console.log('\x1b[32m%s\x1b[0m', `${message.author.username} Leveled Up`);
 		}
 
 		if (user.level == 5) {
@@ -167,7 +183,7 @@ client.on('message', message => {
 				}>. You ranked up! You are now <@&734189094271320195>`
 			);
 			message.member.role.add(elderRole);
-			console.log(`${message.author.username} Ranked Up`);
+			console.log('\x1b[32m%s\x1b[0m', `${message.author.username} Ranked Up`);
 		}
 
 		if (user.level == 10) {
@@ -177,7 +193,7 @@ client.on('message', message => {
 				}>. You ranked up! You are now <@&734189143965564939>`
 			);
 			message.member.role.add(legendRole);
-			console.log(`${message.author.username} Ranked Up`);
+			console.log('\x1b[32m%s\x1b[0m', `${message.author.username} Ranked Up`);
 		}
 
 		if (user.level == 15) {
@@ -187,7 +203,7 @@ client.on('message', message => {
 				}>. You ranked up! You are now <@&734188797960388628>`
 			);
 			message.member.role.add(veteranRole);
-			console.log(`${message.author.username} Ranked Up`);
+			console.log('\x1b[32m%s\x1b[0m', `${message.author.username} Ranked Up`);
 		}
 
 		updateUser(message.author.id, user);
@@ -248,7 +264,7 @@ client.on('guildMemberAdd', async member => {
 	);
 
 	channel.send(`Welcome to the server, ${member}!`, attachment);
-	console.log(`Welcome message sent to ${member}`);
+	console.log('\x1b[32m%s\x1b[0m', `Welcome message sent to ${member}`);
 });
 
 //Dynamic Command Handler
@@ -350,7 +366,7 @@ async function getInfectedFunction(message) {
 		if (chance <= 100) {
 			await message.guild.members.cache.get(author).roles.add(infection);
 			message.channel.send(`<@${author}> has been infected!`);
-			console.log(`${author} has been infected!`);
+			console.log('\x1b[32m%s\x1b[0m', `${author} has been infected!`);
 		}
 	}
 }
@@ -368,7 +384,10 @@ async function giveInfectionFunction(message) {
 			message.channel.send(
 				`<@${pingee.id}> has been infected by <@${message.author.id}>!`
 			);
-			console.log(`${pingee.id} has been infected by ${message.author.id}!`);
+			console.log(
+				'\x1b[32m%s\x1b[0m',
+				`${pingee.id} has been infected by ${message.author.id}!`
+			);
 		}
 	}
 }
@@ -425,10 +444,13 @@ function exitHandler(opt, err) {
 		print(err);
 	}
 	if (opt.save) {
-		print('Saving channels to ' + channelPath + ' before exiting');
-		print(JSON.stringify(servers));
+		console.log(
+			'\x1b[35m%s\x1b[0m',
+			'Saving channels to ' + channelPath + ' before exiting'
+		);
+		console.log('\x1b[35m%s\x1b[0m', JSON.stringify(servers));
 		fs.writeFileSync(channelPath, JSON.stringify(servers, null, 4));
-		print('Done');
+		console.log('\x1b[35m%s\x1b[0m', 'Done');
 	}
 	if (opt.exit) {
 		process.exit();
@@ -800,9 +822,13 @@ function formatDate(date) {
  * @returns The last video of the youtuber
  */
 async function getLastVideo(youtubeChannelName, rssURL) {
-	console.log(`[${youtubeChannelName}]  | Getting videos...`);
+	console.log(
+		'\x1b[31m%s\x1b[0m',
+		`[${youtubeChannelName}]  | Getting videos...`
+	);
 	let content = await parser.parseURL(rssURL);
 	console.log(
+		'\x1b[31m%s\x1b[0m',
 		`[${youtubeChannelName}]  | ${content.items.length} videos found`
 	);
 	let tLastVideos = content.items.sort((a, b) => {
@@ -811,6 +837,7 @@ async function getLastVideo(youtubeChannelName, rssURL) {
 		return bPubDate - aPubDate;
 	});
 	console.log(
+		'\x1b[31m%s\x1b[0m',
 		`[${youtubeChannelName}]  | The last video is "${
 			tLastVideos[0] ? tLastVideos[0].title : 'err'
 		}"`
@@ -825,19 +852,24 @@ async function getLastVideo(youtubeChannelName, rssURL) {
  * @returns The video || null
  */
 async function checkVideos(youtubeChannelName, rssURL) {
-	console.log(`[${youtubeChannelName}] | Get the last video..`);
+	console.log(
+		'\x1b[31m%s\x1b[0m',
+		`[${youtubeChannelName}] | Get the last video..`
+	);
 	let lastVideo = await getLastVideo(youtubeChannelName, rssURL);
 	// If there isn't any video in the youtube channel, return
 	if (!lastVideo) return console.log('[ERR] | No video found for ' + lastVideo);
 	// If the date of the last uploaded video is older than the date of the bot starts, return
 	if (new Date(lastVideo.pubDate).getTime() < startAt)
 		return console.log(
+			'\x1b[31m%s\x1b[0m',
 			`[${youtubeChannelName}] | Last video was uploaded before the bot starts`
 		);
 	let lastSavedVideo = lastVideos[youtubeChannelName];
 	// If the last video is the same as the last saved, return
 	if (lastSavedVideo && lastSavedVideo.id === lastVideo.id)
 		return console.log(
+			'\x1b[31m%s\x1b[0m',
 			`[${youtubeChannelName}] | Last video is the same as the last saved`
 		);
 	return lastVideo;
@@ -864,6 +896,7 @@ function getYoutubeChannelIdFromURL(url) {
  */
 async function getYoutubeChannelInfos(name) {
 	console.log(
+		'\x1b[31m%s\x1b[0m',
 		`[${
 			name.length >= 10 ? name.slice(0, 10) + '...' : name
 		}] | Resolving channel infos...`
@@ -882,6 +915,7 @@ async function getYoutubeChannelInfos(name) {
 		}
 	}
 	console.log(
+		'\x1b[31m%s\x1b[0m',
 		`[${
 			name.length >= 10 ? name.slice(0, 10) + '...' : name
 		}] | Title of the resolved channel: ${
@@ -893,9 +927,10 @@ async function getYoutubeChannelInfos(name) {
 
 //Check For A New Video
 async function check() {
-	console.log('Checking...');
-	config.youtubers.forEach(async youtuber => {
+	console.log('\x1b[31m%s\x1b[0m', 'Checking...');
+	youtubers.forEach(async youtuber => {
 		console.log(
+			'\x1b[31m%s\x1b[0m',
 			`[${
 				youtuber.length >= 10 ? youtuber.slice(0, 10) + '...' : youtuber
 			}] | Start checking...`
@@ -920,7 +955,7 @@ async function check() {
 				.replace('{videoTitle}', video.title)
 				.replace('{videoPubDate}', formatDate(new Date(video.pubDate)))
 		);
-		console.log('Notification sent!');
+		console.log('\x1b[31m%s\x1b[0m', 'Notification sent!');
 		lastVideos[channelInfos.raw.snippet.title] = video;
 	});
 }
@@ -936,7 +971,7 @@ const activities_list = [
 client.on('ready', () => {
 	setInterval(() => {
 		const index = Math.floor(Math.random() * activities_list.length); // generates a random number between 1 and the length of the activities array list
-		client.user.setActivity('<activity>', { type: 'WATCHING' });
+		client.user.setActivity('<activity>', { type: 'PLAYING' });
 		client.user.setActivity(activities_list[index]); // sets bot's activities to one of the phrases in the arraylist.
 	}, 10000); // Runs this every 10 seconds.
 });
@@ -944,19 +979,23 @@ client.on('ready', () => {
 //Login
 client.login(token).then(token => {
 	if (token) {
-		console.log('Logged in with token ' + token);
-		console.log('Reading file ' + channelPath);
+		console.log('\x1b[34mDiscord:\x1b[0m Logged in with token', '\x1b[33m' + token, '\x1b[0m');
+		console.log('\x1b[35m%s\x1b[0m', 'Reading file ' + channelPath);
 		var file = fs.readFileSync(channelPath, { encoding: 'utf-8' });
 		servers = JSON.parse(file);
 		console.log('---');
-		console.log(`${client.user.username} Running!`);
+		console.log('\x1b[36m%s\x1b[0m', `${client.user.username} Running!`);
 		console.log(
+			'\x1b[36m%s\x1b[0m',
 			`${client.guilds.cache.size} Guilds | ${
 				client.channels.cache.size
 			} Channels | ${client.users.cache.size} Users`
 		);
-		console.log('Prefix: ' + prefix);
-		console.log('Bot Issue Form: https://forms.gle/YNKWgAK5FP9u5eEz7');
+		console.log('\x1b[36m%s\x1b[0m', 'Prefix: ' + prefix);
+		console.log(
+			'\x1b[36m%s\x1b[0m',
+			'Bot Issue Form: https://forms.gle/YNKWgAK5FP9u5eEz7'
+		);
 		console.log('---');
 
 		// tick once on startup
@@ -966,7 +1005,7 @@ client.login(token).then(token => {
 		//Dashboard
 		Dashboard(client);
 	} else {
-		console.log('An error occured while logging in:', err);
+		console.log('\x1b[34mDiscord:\x1b[0m An error occured while logging in:', err);
 		process.exit(1);
 	}
 });

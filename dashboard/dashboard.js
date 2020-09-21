@@ -226,6 +226,6 @@ module.exports = async client => {
 	});
 
 	app.listen(config.port, null, null, () =>
-		console.log(`Dashboard is up and running on port ${config.port}. \n---`)
+		console.log(`\x1b[34mDashboard:\x1b[0m Running on port \x1b[33m${config.port}.`, '\x1b[0m', '\n\x1b[34mDashboard:\x1b[0m URL is \x1b[33mhttps://discord.chillcafe.repl.co\x1b[0m', '\n---')
 	);
 };
