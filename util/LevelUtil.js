@@ -30,11 +30,37 @@ class LevelUtil {
 		let oldlvl = LevelUtil.getLevel(oldxp);
 		let newxp = (oldxp = toadd);
 		let newlvl = LevelUtil.getLevel(newxp);
+		let elderRole = message.guild.roles.cache.find(
+			role => role.id == '734189094271320195'
+		);
+		let legendRole = message.guild.roles.cache.find(
+			role => role.id == '734189143965564939'
+		);
+		let veteranRole = message.guild.roles.cache.find(
+			role => role.id == '734188797960388628'
+		);
 
-		if (newlvl > oldlvl)
+		if (newlvl > oldlvl) {
 			message.channel.send(
 				`${message.author}, You just reached level ${newlvl}`
 			);
+		}
+
+		if (newlvl == 5) {
+			message.channel.send(`${message.author}, You ranked up!`);
+			message.member.role.add(elderRole);
+		}
+
+		if (newlvl == 10) {
+			message.channel.send(`${message.author}, You ranked up!`);
+			message.member.role.add(legendRole);
+		}
+
+		if (newlvl == 15) {
+			message.channel.send(`${message.author}, You ranked up!`);
+			message.member.role.add(veteranRole);
+		}
+
 		db.add(`xp_${message.author.id}_${message.guild.id}`, toadd);
 	}
 }

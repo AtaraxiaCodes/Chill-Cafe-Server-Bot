@@ -109,72 +109,6 @@ client.on('message', async message => {
 	return addexp(message);
 });
 
-//Rank up and Level Up Messages
-client.on('message', message => {
-	if (message.author.client) return;
-	if (message.channel.type === 'dm') return;
-
-	if (userExists(message.author.id)) {
-		let user = getUser(message.author.id);
-		let elderRole = message.guild.roles.cache.find(
-			role => role.id == '734189094271320195'
-		);
-		let legendRole = message.guild.roles.cache.find(
-			role => role.id == '734189143965564939'
-		);
-		let veteranRole = message.guild.roles.cache.find(
-			role => role.id == '734188797960388628'
-		);
-
-		user.xp += msgxp;
-		let levelUp = user.level * levelrate - user.xp;
-
-		if (user.xp >= levelrate * user.level) {
-			message.channel.send(
-				`Congratulations, <@${
-					message.author.id
-				}>. You leveled up! You are now level ${++user.level}`
-			);
-			user.xp = 0;
-			console.log('\x1b[32m%s\x1b[0m', `${message.author.username} Leveled Up`);
-		}
-
-		if (user.level == 5) {
-			message.channel.send(
-				`Congratulations, <@${
-					message.author.id
-				}>. You ranked up! You are now <@&734189094271320195>`
-			);
-			message.member.role.add(elderRole);
-			console.log('\x1b[32m%s\x1b[0m', `${message.author.username} Ranked Up`);
-		}
-
-		if (user.level == 10) {
-			message.channel.send(
-				`Congratulations, <@${
-					message.author.id
-				}>. You ranked up! You are now <@&734189143965564939>`
-			);
-			message.member.role.add(legendRole);
-			console.log('\x1b[32m%s\x1b[0m', `${message.author.username} Ranked Up`);
-		}
-
-		if (user.level == 15) {
-			message.channel.send(
-				`Congratulations, <@${
-					message.author.id
-				}>. You ranked up! You are now <@&734188797960388628>`
-			);
-			message.member.role.add(veteranRole);
-			console.log('\x1b[32m%s\x1b[0m', `${message.author.username} Ranked Up`);
-		}
-
-		updateUser(message.author.id, user);
-	} else {
-		updateUser(message.displayName, { xp: 0, level: 1 });
-	}
-});
-
 //Welcome Message w/ canvas
 client.on('guildMemberAdd', async member => {
 	const channel = member.guild.channels.cache.find(
@@ -511,14 +445,24 @@ function apiCallback(server, twitchChannel, res) {
 				for (let i = 0; i < channels.length; i++) {
 					channels[i]
 						.sendEmbed(twitchEmbed)
-						.then(console.log('\x1b[35mTwitch:\x1b[0m', "Sent embed to channel '" + channels[i].name + "'."));
+						.then(
+							console.log(
+								'\x1b[35mTwitch:\x1b[0m',
+								"Sent embed to channel '" + channels[i].name + "'."
+							)
+						);
 				}
 				twitchChannel.online = true;
 				twitchChannel.timestamp = Date.now();
 			} else if (defaultChannel) {
 				defaultChannel
 					.sendEmbed(twitchEmbed)
-					.then(console.log('\x1b[35mTwitch:\x1b[0m', "Sent embed to channel '" + defaultChannel.name + "'."));
+					.then(
+						console.log(
+							'\x1b[35mTwitch:\x1b[0m',
+							"Sent embed to channel '" + defaultChannel.name + "'."
+						)
+					);
 				twitchChannel.online = true;
 				twitchChannel.timestamp = Date.now();
 			}
@@ -569,7 +513,11 @@ client.on('message', message => {
 		try {
 			permission = message.member.roles.exists('name', server.role);
 		} catch (err) {
-			console.log('\x1b[35mTwitch:\x1b[0m', server.role + ' is not a role on the server', err);
+			console.log(
+				'\x1b[35mTwitch:\x1b[0m',
+				server.role + ' is not a role on the server',
+				err
+			);
 		}
 
 		let index;
