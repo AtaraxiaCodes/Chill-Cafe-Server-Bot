@@ -1,6 +1,6 @@
 {
   "name": "Chill-Cafe-Server-Bot",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "The official server bot",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "keywords": [],
   "author": "AtaraxiaPlayz, Star Trek",
-  "license": "ISC",
+  "license": "GPL-v3",
   "dependencies": {
     "body-parser": "^1.19.0",
     "canvas": "^2.6.1",

@@ -6,36 +6,34 @@ This is the official server bot for the Chill Cafe server. You may reuse the cod
 ## Features
 ### Simple Dashboard
 
-### Leveling for Chat Messages
+### Chat XP, Level, & Rank
 
 ### Assign Roles for Leveling
 * Elder @ Level 5
 * Legend @ Level 10
 * Veteran @ Level 15
 
-### Server Stat Messages
-* Server Name
-* Member Count
-* Creation Date
-
 ### Profile Embed
 * Displays Level
 * Displays Rank
 * Displays XP to Next Level
-
-### Help Embed
-
-### Fun Commands
-* 8Ball
-* Truth or Dare
-* Minesweeper
-* Rickroll in VC
 
 ### Economy Commands
 * Coins
 * Work
 * Crime
 * Rob
+
+### Server Stat Messages
+* Server Name
+* Member Count
+* Creation Date
+
+### Fun Commands
+* 8Ball
+* Truth or Dare
+* Minesweeper
+* Rickroll in VC
 
 ### Music Commands
 * Play Music via Youtube URL
@@ -57,5 +55,7 @@ This is the official server bot for the Chill Cafe server. You may reuse the cod
 * Mute
 * Unmute
 * Report
+
+### Help Embed
 
 ### Hosted With Repl.it and 
