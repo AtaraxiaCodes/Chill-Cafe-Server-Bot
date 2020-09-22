@@ -2,7 +2,7 @@
 ## Made By *Ataraxia* & *Star Trek* on Repl.it
 [![Run on Repl.it](https://repl.it/badge/github/AtaraxiaPlayz/Chill-Cafe-Server-Bot)](https://repl.it/github/AtaraxiaPlayz/Chill-Cafe-Server-Bot)
 [![Discord.js](https://img.shields.io/badge/discord.js-v12.0.0--dev-blue.svg?logo=npm)](https://github.com/discordjs)
-![License](https://img.shields.io/cran/l/package.json)
+![License](https://img.shields.io/github/license/AtaraxiaPlayz/Chill-Cafe-Server-Bot)
 [![Dependencies](https://david-dm.org/AtaraxiaPlayz/Chill-Cafe-Server-Bot.svg)](https://david-dm.org/AtaraxiaPlayz/Chill-Cafe-Server-Bot?view=list)
 ![Lines of Code](https://img.shields.io/tokei/lines/github.com/AtaraxiaPlayz/Chill-Cafe-Server-Bot)
 
