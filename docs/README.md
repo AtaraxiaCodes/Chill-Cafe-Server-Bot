@@ -1,6 +1,7 @@
 # *Chill Cafe Server Bot*
 ## Made By *Ataraxia* & *Star Trek* on Repl.it
 [![Run on Repl.it](https://repl.it/badge/github/AtaraxiaPlayz/Chill-Cafe-Server-Bot)](https://repl.it/github/AtaraxiaPlayz/Chill-Cafe-Server-Bot)
+[![Discord.js](https://img.shields.io/badge/discord.js-v12.0.0--dev-blue.svg?logo=npm)](https://github.com/discordjs)
 [![Dependencies](https://david-dm.org/AtaraxiaPlayz/Chill-Cafe-Server-Bot.svg)](https://david-dm.org/AtaraxiaPlayz/Chill-Cafe-Server-Bot?view=list)
 
 <img align="left" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/2400b414-c503-4742-9936-d83e9d087f83/dbfc7gt-749a655c-02e3-4851-a25e-f89cb209589f.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzI0MDBiNDE0LWM1MDMtNDc0Mi05OTM2LWQ4M2U5ZDA4N2Y4M1wvZGJmYzdndC03NDlhNjU1Yy0wMmUzLTQ4NTEtYTI1ZS1mODljYjIwOTU4OWYuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.XhxoHNXvGnDYn8_n41rTrYWDb-OnWQfZZEN6ietlwg8" width="80">
