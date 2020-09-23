@@ -6,7 +6,7 @@
 ![GitHub forks](https://img.shields.io/github/forks/AtaraxiaPlayz/Chill-Cafe-Server-Bot?style=social)
 ![GitHub followers](https://img.shields.io/github/followers/AtaraxiaPlayz?style=social)
 
-<img align="left" src="https://github.com/AtaraxiaPlayz/Chill-Cafe-Server-Bot/blob/master/images/pfpImage.jpg" width="200">
+<img align="left" src="https://github.com/AtaraxiaPlayz/Chill-Cafe-Server-Bot/blob/master/images/pfpImage.jpg" width="180">
 This is the official server bot for the Chill Cafe server. You may run your own instance of the bot and/or remix the code to your liking IF in compliance to the GPL-3.0 License. Look below for help in creating your own instance.
 
 [![Run on Repl.it](https://repl.it/badge/github/AtaraxiaPlayz/Chill-Cafe-Server-Bot)](https://repl.it/github/AtaraxiaPlayz/Chill-Cafe-Server-Bot)
