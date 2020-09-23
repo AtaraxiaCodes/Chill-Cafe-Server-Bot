@@ -4,6 +4,7 @@
 This is the official server bot for the Chill Cafe server. You may run your own instance of the bot and/or remix the code to your liking IF in compliance to the GPL-3.0 License. Look below for help in creating your own instance.
 
 [![Run on Repl.it](https://repl.it/badge/github/AtaraxiaPlayz/Chill-Cafe-Server-Bot)](https://repl.it/github/AtaraxiaPlayz/Chill-Cafe-Server-Bot)
+![node-current](https://img.shields.io/node/v/package)
 [![Discord.js](https://img.shields.io/badge/discord.js-v12.0.0--dev-blue.svg?logo=npm)](https://github.com/discordjs)
 ![License](https://img.shields.io/github/license/AtaraxiaPlayz/Chill-Cafe-Server-Bot)
 ![David](https://img.shields.io/david/AtaraxiaPlayz/Chill-Cafe-Server-Bot)
