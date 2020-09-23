@@ -6,7 +6,8 @@ This is the official server bot for the Chill Cafe server. You may run your own 
 [![Run on Repl.it](https://repl.it/badge/github/AtaraxiaPlayz/Chill-Cafe-Server-Bot)](https://repl.it/github/AtaraxiaPlayz/Chill-Cafe-Server-Bot)
 [![Discord.js](https://img.shields.io/badge/discord.js-v12.0.0--dev-blue.svg?logo=npm)](https://github.com/discordjs)
 ![License](https://img.shields.io/github/license/AtaraxiaPlayz/Chill-Cafe-Server-Bot)
-[![Dependencies](https://david-dm.org/AtaraxiaPlayz/Chill-Cafe-Server-Bot.svg)](https://david-dm.org/AtaraxiaPlayz/Chill-Cafe-Server-Bot?view=list)
+![David](https://img.shields.io/david/AtaraxiaPlayz/Chill-Cafe-Server-Bot)
+
 ![Lines of Code](https://img.shields.io/tokei/lines/github.com/AtaraxiaPlayz/Chill-Cafe-Server-Bot)
 ![GitHub Repo stars](https://img.shields.io/github/stars/AtaraxiaPlayz/Chill-Cafe-Server-Bot?style=social)
 ![GitHub watchers](https://img.shields.io/github/watchers/AtaraxiaPlayz/Chill-Cafe-Server-Bot?style=social)
