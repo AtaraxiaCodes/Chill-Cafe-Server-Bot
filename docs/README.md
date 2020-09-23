@@ -1,21 +1,21 @@
 # *Chill Cafe Server Bot*
 ## Made By *Ataraxia* & *Star Trek* on Repl.it
 
-![GitHub Repo stars](https://img.shields.io/github/stars/AtaraxiaPlayz/Chill-Cafe-Server-Bot?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/AtaraxiaPlayz/Chill-Cafe-Server-Bot?style=social)
-![GitHub forks](https://img.shields.io/github/forks/AtaraxiaPlayz/Chill-Cafe-Server-Bot?style=social)
-![GitHub followers](https://img.shields.io/github/followers/AtaraxiaPlayz?style=social)
+![GitHub Repo stars](https://img.shields.io/github/stars/AtaraxiaCodes/Chill-Cafe-Server-Bot?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/AtaraxiaCodes/Chill-Cafe-Server-Bot?style=social)
+![GitHub forks](https://img.shields.io/github/forks/AtaraxiaCodes/Chill-Cafe-Server-Bot?style=social)
+![GitHub followers](https://img.shields.io/github/followers/AtaraxiaCodes?style=social)
 
-<img align="right" src="https://github.com/AtaraxiaPlayz/Chill-Cafe-Server-Bot/blob/master/images/pfpImage.jpg" width="180">
+<img align="right" src="https://github.com/AtaraxiaCodes/Chill-Cafe-Server-Bot/blob/master/images/pfpImage.jpg" width="180">
 This is the official server bot for the Chill Cafe server. You may run your own instance of the bot and/or remix the code to your liking IF in compliance to the GPL-3.0 License. Look below for help in creating your own instance.
 
-[![Run on Repl.it](https://repl.it/badge/github/AtaraxiaPlayz/Chill-Cafe-Server-Bot)](https://repl.it/github/AtaraxiaPlayz/Chill-Cafe-Server-Bot)
+[![Run on Repl.it](https://repl.it/badge/github/AtaraxiaCodes/Chill-Cafe-Server-Bot)](https://repl.it/github/AtaraxiaPlayz/Chill-Cafe-Server-Bot)
 ![node-current](https://img.shields.io/node/v/package)
 [![Discord.js](https://img.shields.io/badge/discord.js-v12.0.0--dev-blue.svg?logo=npm)](https://github.com/discordjs)
-![License](https://img.shields.io/github/license/AtaraxiaPlayz/Chill-Cafe-Server-Bot)
-![David](https://img.shields.io/david/AtaraxiaPlayz/Chill-Cafe-Server-Bot)
-[![CodeFactor](https://www.codefactor.io/repository/github/ataraxiaplayz/chill-cafe-server-bot/badge)](https://www.codefactor.io/repository/github/ataraxiaplayz/chill-cafe-server-bot)
-![GitHub last commit](https://img.shields.io/github/last-commit/AtaraxiaPlayz/Chill-Cafe-Server-Bot)
+![License](https://img.shields.io/github/license/AtaraxiaCodes/Chill-Cafe-Server-Bot)
+![David](https://img.shields.io/david/AtaraxiaCodes/Chill-Cafe-Server-Bot)
+[![CodeFactor](https://www.codefactor.io/repository/github/ataraxiacodes/chill-cafe-server-bot/badge)](https://www.codefactor.io/repository/github/ataraxiacodes/chill-cafe-server-bot)
+![GitHub last commit](https://img.shields.io/github/last-commit/AtaraxiaCodes/Chill-Cafe-Server-Bot)
 
 ## Features
 * Chat based XP, Level, Rank, & Profile
@@ -46,7 +46,7 @@ npm install --global windows-build-tools
 ```
 Then your system should be ready.  
 ```
-git clone https://github.com/AtaraxiaPlayz/Chill-Cafe-Server-Bot.git
+git clone https://github.com/AtaraxiaCodes/Chill-Cafe-Server-Bot.git
 cd Chill-Cafe-Server-Bot
 npm install
 npm run start
@@ -88,7 +88,7 @@ Copy the following and paste it into a new file in the main folder named *config
     "PRUNING": false, //This is to delete music messages by the bot
     "twitchClientId": "", //This is your Twitch Client ID
     "mongodbUrl": "", //This is your Mongo Database URL
-    "dbLink": "", //Backup Mongo Database Link
+    "dbLink": "", //Same Mongo Database Link
     "infectionRoleID": "", //This is the Role ID for Infected
     "ownerID": "", //This is the User ID of the owner
     "adminRoleID": "", //This is the Role ID for Administrator
