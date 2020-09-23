@@ -1,7 +1,7 @@
 # *Chill Cafe Server Bot*
 ## Made By *Ataraxia* & *Star Trek* on Repl.it
 <img align="left" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/2400b414-c503-4742-9936-d83e9d087f83/dbfc7gt-749a655c-02e3-4851-a25e-f89cb209589f.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzI0MDBiNDE0LWM1MDMtNDc0Mi05OTM2LWQ4M2U5ZDA4N2Y4M1wvZGJmYzdndC03NDlhNjU1Yy0wMmUzLTQ4NTEtYTI1ZS1mODljYjIwOTU4OWYuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.XhxoHNXvGnDYn8_n41rTrYWDb-OnWQfZZEN6ietlwg8" width="200">
-This is the **official** server bot for the *Chill Cafe server*. You may run your own instance of the bot and/or remix the code to your liking **IF in compliance** to the GPL-3.0 License. Look below for help in creating your own instance.
+This is the official server bot for the Chill Cafe server. You may run your own instance of the bot and/or remix the code to your liking IF in compliance to the GPL-3.0 License. Look below for help in creating your own instance.
 
 [![Run on Repl.it](https://repl.it/badge/github/AtaraxiaPlayz/Chill-Cafe-Server-Bot)](https://repl.it/github/AtaraxiaPlayz/Chill-Cafe-Server-Bot)
 ![node-current](https://img.shields.io/node/v/package)
